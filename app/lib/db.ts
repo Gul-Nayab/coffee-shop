@@ -3,9 +3,12 @@ import { GetDBSettings } from './dbSettings';
 
 const settings = GetDBSettings();
 
-export async function query(sql: string, params?: unknown[]) {
+export async function query<T = unknown>(
+  sql: string,
+  params?: unknown[]
+): Promise<T[]> {
   const connection = await mysql.createConnection(settings);
-  const [results] = await connection.execute(sql, params);
+  const [rows] = await connection.execute(sql, params);
   connection.end();
-  return results;
+  return rows as T[];
 }
