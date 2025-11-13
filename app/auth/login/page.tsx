@@ -1,8 +1,8 @@
 'use client';
 
-import axios from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 function Login() {
   const router = useRouter();
@@ -10,31 +10,23 @@ function Login() {
     username: '',
     password: '',
   });
-  async function getExistingUser() {
-    try {
-      const response = await axios.get(
-        `/api/coffee-shop/users/${user.username}`,
-        {
-          timeout: 5000,
-        }
-      );
-      return response.data;
-    } catch (error: unknown) {
-      console.error('Error fetching data:', error);
-    }
-  }
+
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log(user);
     e.preventDefault();
-    const users = await getExistingUser();
-    if (users.status === 404) {
-      console.error('This user does not exist. Please use Create Account.');
-    } else if (user.password !== users.password) {
-      console.error('The password is incorrect. Please try again.');
-    } else {
-      console.log('Logged in!');
-      router.push(`/account/${user.username}`);
+    const res = await signIn('credentials', {
+      username: user.username,
+      password: user.password,
+      redirect: false,
+    });
+    if (res?.error) {
+      console.error(res.error);
+      return;
     }
+    console.log('Logged in!');
+    router.push(`/${user.username}/`);
   };
+
   return (
     //Login page (br tags are temporary, remove after adding styles)
     <div>
@@ -62,7 +54,7 @@ function Login() {
         <button type='submit'>Log in</button>
       </form>
 
-      <button>Create Accout</button>
+      <button onClick={() => router.push('/auth/create')}>Create Accout</button>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 function AccountDashboard() {
   const { username } = useParams();
@@ -63,6 +64,10 @@ function AccountDashboard() {
           <p>{customer.phone_number || ''}</p>
         </>
       )}
+
+      <button onClick={() => signOut({ callbackUrl: '/auth/login' })}>
+        Log out
+      </button>
     </div>
   );
 }
