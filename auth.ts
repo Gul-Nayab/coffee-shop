@@ -1,4 +1,3 @@
-// auth.ts
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import axios from 'axios';
@@ -11,7 +10,7 @@ async function getUserFromDb(username: string, password: string) {
         timeout: 5000,
       }
     );
-    console.log('Response in getUser:', response);
+    console.log('Response in getUser:', response.data);
     const dbUser = response.data;
 
     if (!dbUser || !dbUser.password) return null;
