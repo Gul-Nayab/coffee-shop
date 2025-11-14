@@ -16,7 +16,11 @@ export async function GET(
     }
 
     const user = await query(
-      'SELECT * FROM user u LEFT OUTER JOIN employee e ON e.username = u.username LEFT OUTER JOIN customer c ON c.username = u.username WHERE u.username = ?',
+      `SELECT * FROM user u 
+      LEFT OUTER JOIN employee e ON e.username = u.username
+      LEFT OUTER JOIN manager m ON m.employee_id = e.employee_id
+      LEFT OUTER JOIN customer c ON c.username = u.username
+      WHERE u.username = ?`,
       [username]
     );
     console.log(user);

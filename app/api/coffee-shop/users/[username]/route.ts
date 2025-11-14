@@ -19,11 +19,11 @@ export async function GET(
       'SELECT username, password FROM user WHERE username = ?',
       [username]
     );
-    console.log(user);
+    console.log('user in api', user);
     if (user.length === 0) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
-    return NextResponse.json(user[0], { status: 200 }); // Return the found user
+    return NextResponse.json(user[0]); // Return the found user
   } catch (error: unknown) {
     console.error('Database error:', error);
     return NextResponse.json(
