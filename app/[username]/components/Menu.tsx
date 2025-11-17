@@ -14,7 +14,7 @@ interface MenuItem {
   price: number;
 }
 
-function Menu({ store_id }: number) {
+function Menu(store_id: number) {
   const router = useRouter();
   //   const { data: session, status } = useSession();
   const { user, userType, loading } = useUser();

@@ -5,6 +5,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { useParams, useRouter } from 'next/navigation';
 import { useUser } from '../UserContext';
 import Link from 'next/link';
+import Image from 'next/image';
 
 function NavBar() {
   const router = useRouter();
@@ -18,8 +19,16 @@ function NavBar() {
   if (status === 'loading' || loading) return <div>Loading...</div>;
 
   return (
-    <nav style={{ padding: '10px', backgroundColor: '#333', color: '#fff' }}>
+    <nav
+      style={{ padding: '4px', backgroundColor: '#ebbf7dff', color: '#fff' }}
+    >
       <ul>
+        <Image
+          src='/images/SJCoffeeLogo.png'
+          width={100}
+          height={100}
+          alt='logo'
+        />
         {userType === 'customer' ? (
           <>
             <li>

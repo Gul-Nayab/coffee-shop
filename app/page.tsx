@@ -6,12 +6,6 @@ export default function Home() {
     <>
       {/* navbar */}
       <div>
-        <Image
-          src='/SJCoffeeLogo.png'
-          width={100}
-          height={100}
-          alt='Picture of the author'
-        />
         <button>
           <Link href={`/auth/create`} />
           Sign Up
@@ -23,10 +17,10 @@ export default function Home() {
       </div>
       <div>
         <Image
-          src='/SJCoffeeLogo.png'
+          src='/images/SJCoffeeLogo.png'
           width={500}
           height={500}
-          alt='Picture of the author'
+          alt='logo'
         />
         <h1>WELCOME DOWNTOWN SAN JOSE COFFEE SHOP MANAGEMENT PLATFORM</h1>
       </div>
