@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tabler/icons-react": "^3.35.0",
     "axios": "^1.13.2",
     "mysql2": "^3.15.3",
     "next": "16.0.1",
