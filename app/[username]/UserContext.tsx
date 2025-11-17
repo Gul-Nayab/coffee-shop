@@ -1,7 +1,6 @@
 'use client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'next/navigation';
 
 interface User {
   name: string;
@@ -29,8 +28,13 @@ const UserContext = createContext<UserContextType>({
   loading: true,
 });
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
-  const { username } = useParams();
+export function UserProvider({
+  username,
+  children,
+}: {
+  username: string;
+  children: React.ReactNode;
+}) {
   const [user, setUser] = useState<User | null>(null);
   const [userType, setUserType] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,13 +48,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         );
         const user = response.data;
         setUser(user);
-        if (user.employee_id && user.salary) {
-          setUserType('manager');
-        } else if (user.employee_id) {
-          setUserType('barista');
-        } else {
-          setUserType('customer');
-        }
+        if (user.employee_id && user.salary) setUserType('manager');
+        else if (user.employee_id) setUserType('barista');
+        else setUserType('customer');
       } catch (err) {
         console.error('Error fetching user:', err);
       } finally {

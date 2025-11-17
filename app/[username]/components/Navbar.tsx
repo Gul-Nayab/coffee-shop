@@ -2,14 +2,15 @@
 
 import { useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useUser } from '../UserContext';
 import Link from 'next/link';
 
 function NavBar() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { user, userType, loading } = useUser();
+  const { username } = useParams() as { username: string };
+  const { userType, loading } = useUser();
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/auth/login');
   }, [status, router]);
@@ -22,30 +23,30 @@ function NavBar() {
         {userType === 'customer' ? (
           <>
             <li>
-              <Link href={`/${user?.username}/stores`}>Stores</Link>
+              <Link href={`/${username}/stores`}>Stores</Link>
             </li>
             <li>
-              <Link href={`/${user?.username}/stores`}>Order</Link>
+              <Link href={`/${username}/orders`}>Order</Link>
             </li>
           </>
         ) : (
           <>
             <li>
-              <Link href={`/${user?.username}/dashboard`}>Dashboard</Link>
+              <Link href={`/${username}/dashboard`}>Dashboard</Link>
             </li>
             <li>
-              <Link href={`/${user?.username}/shifts`}>Shifts</Link>
+              <Link href={`/${username}/shifts`}>Shifts</Link>
             </li>
             <li>
-              <Link href={`/${user?.username}/inventory`}>Inventory</Link>
+              <Link href={`/${username}/inventory`}>Inventory</Link>
             </li>
             {userType === 'manager' ? (
               <li>
-                <Link href={`/${user?.username}/earnings`}>Earnings</Link>
+                <Link href={`/${username}/earnings`}>Earnings</Link>
               </li>
             ) : (
               <li>
-                <Link href={`/${user?.username}/orders`}>Orders</Link>
+                <Link href={`/${username}/orders`}>Orders</Link>
               </li>
             )}
           </>
@@ -57,7 +58,7 @@ function NavBar() {
           </button>
         </li>
         <li>
-          <Link href={`/${user?.username}/account`}>{user?.username}</Link>
+          <Link href={`/${username}/account`}>{username}</Link>
         </li>
       </ul>
     </nav>
