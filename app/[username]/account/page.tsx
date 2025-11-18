@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../UserContext';
-import UserAccountInfo from '@/app/[username]/account/components/UserAccountInfo';
+import UserAccountInfo from '../components/UserAccountInfo';
 
 function AccountPage() {
   const router = useRouter();

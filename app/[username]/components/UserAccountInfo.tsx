@@ -3,7 +3,13 @@ interface Customer {
   username: string;
   password: string;
   phone_number?: number;
-  student_id?: number;
+}
+interface Student {
+  name: string;
+  username: string;
+  password: string;
+  phone_number?: number;
+  student_id: number;
 }
 
 interface Barista {
@@ -26,13 +32,13 @@ interface Manager {
 }
 
 interface UserAccountInfoProps {
-  user: Customer | Manager | Barista;
-  type: 'customer' | 'barista' | 'manager';
+  user: Customer | Manager | Barista | Student;
+  type: 'customer' | 'barista' | 'manager' | 'student';
 }
 
 function UserAccountInfo({ user, type }: UserAccountInfoProps) {
-  if (type === 'customer') {
-    const customer = user as Customer;
+  if (type === 'customer' || type === 'student') {
+    const customer = user as Customer | Student;
     return (
       <table>
         <tbody>
@@ -46,10 +52,10 @@ function UserAccountInfo({ user, type }: UserAccountInfoProps) {
               {customer.phone_number ? customer.phone_number : 'Not provided'}
             </td>
           </tr>
-          {customer.student_id ? (
+          {type == 'student' ? (
             <tr>
               <th>Student ID</th>
-              <td>{customer.student_id}</td>
+              <td>{(customer as Student).student_id}</td>
             </tr>
           ) : null}
         </tbody>
