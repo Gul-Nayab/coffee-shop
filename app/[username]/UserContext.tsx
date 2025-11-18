@@ -9,6 +9,7 @@ interface User {
   employee_id?: number;
   hours?: number;
   store_id?: number;
+  is_manager: boolean;
   salary?: number;
   phone_number?: number;
   student_id?: number;
@@ -51,7 +52,7 @@ export function UserProvider({
         );
         const user = response.data;
         setUser(user);
-        if (user.employee_id && user.salary) setUserType('manager');
+        if (user.is_manager) setUserType('manager');
         else if (user.employee_id) setUserType('barista');
         else if (user.student_id) setUserType('student');
         else setUserType('customer');

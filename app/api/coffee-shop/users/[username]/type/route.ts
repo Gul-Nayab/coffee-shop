@@ -16,10 +16,9 @@ export async function GET(
     }
 
     const user = await query(
-      `SELECT u.username, u.password, u.name, e.employee_id, e.hours, e.store_id, m.salary, c.phone_number, c.student_id
+      `SELECT u.username, u.password, u.name, e.employee_id, e.hours, e.store_id, e.is_manager, e.salary, c.phone_number, c.student_id
       FROM user u 
       LEFT JOIN employee e ON e.username = u.username
-      LEFT JOIN manager m ON m.employee_id = e.employee_id
       LEFT JOIN customer c ON c.username = u.username
       WHERE u.username = ?`,
       [username]

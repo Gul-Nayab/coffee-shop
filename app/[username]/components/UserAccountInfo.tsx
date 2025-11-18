@@ -12,27 +12,19 @@ interface Student {
   student_id: number;
 }
 
-interface Barista {
+interface Employee {
   name: string;
   username: string;
   password: string;
   employee_id: number;
-  hours?: number;
-  store_id?: number;
-}
-
-interface Manager {
-  name: string;
-  username: string;
-  password: string;
-  employee_id: number;
-  hours?: number;
-  store_id?: number;
+  hours: number;
+  store_id: number;
   salary: number;
+  is_manager: boolean;
 }
 
 interface UserAccountInfoProps {
-  user: Customer | Manager | Barista | Student;
+  user: Customer | Employee | Student;
   type: 'customer' | 'barista' | 'manager' | 'student';
 }
 
@@ -63,7 +55,7 @@ function UserAccountInfo({ user, type }: UserAccountInfoProps) {
     );
   }
 
-  const employee = user as Barista | Manager;
+  const employee = user as Employee;
 
   return (
     <table>
@@ -81,18 +73,18 @@ function UserAccountInfo({ user, type }: UserAccountInfoProps) {
           <td>{employee.hours ?? 0}</td>
         </tr>
         <tr>
-          <th>Store ID</th>
-          <td>{employee.store_id ? employee.store_id : 'unknown'}</td>
+          {type === 'manager' ? <th>Managed Cafe</th> : <th>Works for Cafe</th>}
+          <td>Cafe #{employee.store_id}</td>
         </tr>
         {type === 'manager' ? (
           <tr>
             <th>Biweekly Salary</th>
-            <td>${((employee as Manager).salary / 52).toFixed(2)}</td>
+            <td>${employee.salary}</td>
           </tr>
         ) : (
           <tr>
             <th>Calculated Salary</th>
-            <td>${((employee.hours ?? 0) * 20).toFixed(2)}</td>
+            <td>${((employee.hours ?? 0) * employee.salary).toFixed(2)}</td>
           </tr>
         )}
       </tbody>
