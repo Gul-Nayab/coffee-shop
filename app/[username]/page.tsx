@@ -1,0 +1,106 @@
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { useUser } from './UserContext';
+
+function Dashboard() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const { user, userType, loading } = useUser();
+
+  useEffect(() => {
+    if (status === 'unauthenticated') router.push('/auth/login');
+  }, [status, router, userType]);
+
+  if (status === 'loading' || loading) return <div>Loading...</div>;
+
+  return (
+    <div>
+      <h1> Welcome, {user?.name}</h1>
+      {/** the actions the user can take*/}
+      {userType === 'customer' || userType === 'student' ? (
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div
+            style={{
+              border: '1px solid black',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              width: 'fit-content',
+              padding: '1rem',
+            }}
+            onClick={() => router.push('stores')}
+          >
+            View Nearby Stores
+          </div>
+          <div
+            style={{
+              border: '1px solid black',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              width: 'fit-content',
+              padding: '1rem',
+            }}
+            onClick={() => router.push('orders')}
+          >
+            View Your Orders
+          </div>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div
+            style={{
+              border: '1px solid black',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              width: 'fit-content',
+              padding: '1rem',
+            }}
+            onClick={() => router.push('shifts')}
+          >
+            {' '}
+            View Shifts
+          </div>
+          <div
+            style={{
+              border: '1px solid black',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              width: 'fit-content',
+              padding: '1rem',
+            }}
+            onClick={() => router.push('inventory')}
+          >
+            View Inventory
+          </div>
+          {userType === 'manager' ? (
+            <div
+              style={{
+                border: '1px solid black',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                minWidth: 'fit-content',
+              }}
+              onClick={() => router.push('earnings')}
+            >
+              View Earnings
+            </div>
+          ) : (
+            <div
+              style={{
+                border: '1px solid black',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                minWidth: 'fit-content',
+              }}
+              onClick={() => router.push('orders')}
+            >
+              View Incoming Orders
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+export default Dashboard;

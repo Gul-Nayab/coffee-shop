@@ -24,7 +24,7 @@ function Login() {
       return;
     }
     console.log('Logged in!');
-    router.push(`/${user.username}/account`);
+    router.push(`/${user.username}/`);
   };
 
   return (

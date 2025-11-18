@@ -27,13 +27,15 @@ function NavBar() {
       }}
     >
       <ul style={{ display: 'flex', listStyle: 'none', gap: '2rem' }}>
-        <Image
-          src='/images/SJCoffeeLogo.png'
-          width={50}
-          height={50}
-          alt='logo'
-        />
-        {userType === 'customer' ? (
+        <Link href={`/${username}/`}>
+          <Image
+            src='/images/SJCoffeeLogo.png'
+            width={50}
+            height={50}
+            alt='logo'
+          />
+        </Link>
+        {userType === 'customer' || userType === 'student' ? (
           <>
             <li>
               <Link href={`/${username}/stores`}>Stores</Link>
@@ -45,7 +47,7 @@ function NavBar() {
         ) : (
           <>
             <li>
-              <Link href={`/${username}/dashboard`}>Dashboard</Link>
+              <Link href={`/${username}/`}>Dashboard</Link>
             </li>
             <li>
               <Link href={`/${username}/shifts`}>Shifts</Link>
