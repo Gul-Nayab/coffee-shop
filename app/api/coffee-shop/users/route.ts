@@ -44,22 +44,16 @@ export async function POST(request: NextRequest) {
       );
     } else {
       await connection.query(
-        `INSERT INTO employee (username, employee_id, hours, store_id)
-      VALUES (?, ?, ?, ?)`,
+        `INSERT INTO employee (username, employee_id, hours, store_id, salary, is_manager)
+      VALUES (?, ?, ?, ?, ?, ?)`,
         [
           username,
           kwargs.employee.employee_id,
           kwargs.employee.hours,
           kwargs.employee.store_id,
+          kwargs.employee.salary,
+          kwargs.employee.is_manager,
         ]
-      );
-    }
-
-    if (kwargs.employeeType === 'manager') {
-      await connection.query(
-        `INSERT INTO manager (employee_id, salary)
-      VALUES (?, ?)`,
-        [kwargs.manager.employee_id, kwargs.manager.salary]
       );
     }
 

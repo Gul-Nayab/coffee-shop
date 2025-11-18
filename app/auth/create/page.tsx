@@ -41,10 +41,8 @@ function CreateAccount() {
     employee_id: 0,
     hours: 0,
     store_id: 0,
-  });
-  const [manager, setManagerUser] = useState({
-    employee_id: 0,
     salary: 0,
+    is_manager: false,
   });
 
   useEffect(() => {
@@ -70,10 +68,8 @@ function CreateAccount() {
         password: user.password,
         name: user.name,
         kwargs: {
-          employeeType,
           employee,
           customer,
-          manager,
         },
       });
       alert(`${response.data.message}`);
@@ -166,9 +162,15 @@ function CreateAccount() {
               Role:
               <select
                 value={employeeType}
-                onChange={(e) =>
-                  setEmployeeType(e.target.value as 'barista' | 'manager')
-                }
+                onChange={(e) => {
+                  {
+                    setEmployeeType(e.target.value as 'barista' | 'manager');
+                    setEmployeeUser({
+                      ...employee,
+                      is_manager: e.target.value === 'manager' ? true : false,
+                    });
+                  }
+                }}
               >
                 <option value='barista'>Barista</option>
                 <option value='manager'>Manager</option>
@@ -186,10 +188,6 @@ function CreateAccount() {
                     ...employee,
                     employee_id: parseInt(e.target.value),
                   });
-                  setManagerUser({
-                    ...manager,
-                    employee_id: parseInt(e.target.value),
-                  });
                 }}
               />
             </label>
@@ -199,17 +197,32 @@ function CreateAccount() {
                 Salary
                 <input
                   type='text'
-                  placeholder='enter your yearly salary'
+                  placeholder='enter your biweekly salary'
                   id='salary-input'
                   onChange={(e) =>
-                    setManagerUser({
-                      ...manager,
+                    setEmployeeUser({
+                      ...employee,
                       salary: parseFloat(e.target.value),
                     })
                   }
                 />
               </label>
-            ) : null}
+            ) : (
+              <label>
+                Salary
+                <input
+                  type='text'
+                  placeholder='enter your hourly salary'
+                  id='salary-barista-input'
+                  onChange={(e) =>
+                    setEmployeeUser({
+                      ...employee,
+                      salary: parseFloat(e.target.value),
+                    })
+                  }
+                />
+              </label>
+            )}
             <label>
               Pick the store you work for
               <select
