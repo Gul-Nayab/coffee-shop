@@ -7,7 +7,7 @@ import { useUser } from './UserContext';
 function Dashboard() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { user, userType, loading } = useUser();
+  const { user, username, userType, loading } = useUser();
 
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/auth/login');
@@ -29,7 +29,7 @@ function Dashboard() {
               width: 'fit-content',
               padding: '1rem',
             }}
-            onClick={() => router.push('stores')}
+            onClick={() => router.push(`/${username}/stores`)}
           >
             View Nearby Stores
           </div>
@@ -41,7 +41,7 @@ function Dashboard() {
               width: 'fit-content',
               padding: '1rem',
             }}
-            onClick={() => router.push('orders')}
+            onClick={() => router.push(`/${username}/orders`)}
           >
             View Your Orders
           </div>
@@ -56,7 +56,7 @@ function Dashboard() {
               width: 'fit-content',
               padding: '1rem',
             }}
-            onClick={() => router.push('shifts')}
+            onClick={() => router.push(`/${username}/shifts`)}
           >
             {' '}
             View Shifts
@@ -69,7 +69,7 @@ function Dashboard() {
               width: 'fit-content',
               padding: '1rem',
             }}
-            onClick={() => router.push('inventory')}
+            onClick={() => router.push(`/${username}/inventory`)}
           >
             View Inventory
           </div>
@@ -81,7 +81,7 @@ function Dashboard() {
                 cursor: 'pointer',
                 minWidth: 'fit-content',
               }}
-              onClick={() => router.push('earnings')}
+              onClick={() => router.push(`/${username}/finances`)}
             >
               View Earnings
             </div>
@@ -93,7 +93,7 @@ function Dashboard() {
                 cursor: 'pointer',
                 minWidth: 'fit-content',
               }}
-              onClick={() => router.push('orders')}
+              onClick={() => router.push(`/${username}/orders`)}
             >
               View Incoming Orders
             </div>

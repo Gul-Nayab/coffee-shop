@@ -57,7 +57,7 @@ function NavBar() {
             </li>
             {userType === 'manager' ? (
               <li>
-                <Link href={`/${username}/earnings`}>Earnings</Link>
+                <Link href={`/${username}/finances`}>Finances</Link>
               </li>
             ) : (
               <li>
