@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { useUser } from '@/app/[username]/UserContext';
 import axios from 'axios';
 import { IconCookie, IconCup } from '@tabler/icons-react';
@@ -14,18 +13,11 @@ interface MenuItem {
   price: number;
 }
 
-function Menu(store_id: number) {
+function Menu({ store_id }: number) {
   const router = useRouter();
-  //   const { data: session, status } = useSession();
   const { user, userType, loading } = useUser();
 
   const [menu, setMenu] = useState<MenuItem[]>([]);
-
-  //   useEffect(() => {
-  //     if (status === 'unauthenticated') {
-  //       router.push('/auth/login');
-  //     }
-  //   }, [status, router]);
 
   useEffect(() => {
     async function getMenuItems() {
@@ -45,24 +37,27 @@ function Menu(store_id: number) {
     getMenuItems();
   }, [store_id]);
 
-  //   if (status === 'loading' || loading) {
-  //     return <div>Loading...</div>;
-  //   }
-
-  //   if (!session) {
-  //     return null;
-  //   }
-
   function handleOrder(item_name: string) {
     console.log(`${item_name} added to order`);
   }
 
+  //remove inline styles
   return (
-    <div>
+    <div style={{ display: 'flex', gap: '0.5rem' }}>
       {/*Menu Item container */}
       {userType === 'customer' &&
         menu.map((item) => (
-          <div key={item.item_name} onClick={() => handleOrder(item.item_name)}>
+          <div
+            key={item.item_name}
+            onClick={() => handleOrder(item.item_name)}
+            style={{
+              border: '1px solid black',
+              padding: '5px',
+              minWidth: '100px',
+              cursor: 'pointer',
+            }}
+          >
+            {/* Each item's div */}
             <div>
               {item.ingredients.length === 0 ? (
                 <IconCookie size={20} />
@@ -74,7 +69,7 @@ function Menu(store_id: number) {
             {item.ingredients.length !== 0 && (
               <p>{item.ingredients.join(', ')}</p>
             )}
-            <p>${item.price}</p>
+            <p>{item.price}</p>
           </div>
         ))}
     </div>

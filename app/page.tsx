@@ -1,19 +1,15 @@
+'use client';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
   return (
     <>
       {/* navbar */}
       <div>
-        <button>
-          <Link href={`/auth/create`} />
-          Sign Up
-        </button>
-        <button>
-          <Link href={`/auth/login`} />
-          Login In
-        </button>
+        <button onClick={() => router.push(`/auth/create`)}>Sign Up</button>
+        <button onClick={() => router.push(`/auth/login`)}>Login In</button>
       </div>
       <div>
         <Image

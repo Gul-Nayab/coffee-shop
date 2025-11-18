@@ -20,13 +20,17 @@ function NavBar() {
 
   return (
     <nav
-      style={{ padding: '4px', backgroundColor: '#ebbf7dff', color: '#fff' }}
+      style={{
+        padding: '4px',
+        backgroundColor: '#ebbf7dff',
+        color: '#fff',
+      }}
     >
-      <ul>
+      <ul style={{ display: 'flex', listStyle: 'none', gap: '2rem' }}>
         <Image
           src='/images/SJCoffeeLogo.png'
-          width={100}
-          height={100}
+          width={50}
+          height={50}
           alt='logo'
         />
         {userType === 'customer' ? (
