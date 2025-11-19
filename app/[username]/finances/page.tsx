@@ -3,6 +3,16 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useUser } from '../UserContext';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Label,
+} from 'recharts';
+
 import axios from 'axios';
 
 interface Item {
@@ -82,43 +92,73 @@ function Earnings() {
   return (
     <div>
       <h1> Finance Overview</h1>
-      <h4> Current Budget </h4>
-      <p>${budget}</p>
-      {showBudgetForm ? (
-        <div style={{ display: 'flex', gap: '4px' }}>
-          <input
-            type='number'
-            min='0'
-            value={newBudgetValue || budget}
-            onChange={(e) => setNewBudgetValue(parseFloat(e.target.value))}
-            style={{ width: '80px' }}
-            placeholder='new budget'
-          />
-          <button
-            onClick={() => {
-              setNewBudget(earnings[0].store_id, newBudgetValue);
-              setNewBudgetValue(null);
-              setShowBudgetForm(false);
-            }}
-          >
-            Set
+      <div>
+        {' '}
+        {/*This div shows total earning and budget */}
+        <h3>Money Stats</h3>
+        <h4> Current Budget </h4>
+        <p>${budget}</p>
+        {/*If button is clicked, show number input with set and cancel buttons */}
+        {showBudgetForm ? (
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <input
+              type='number'
+              min='0'
+              value={newBudgetValue || budget}
+              onChange={(e) => setNewBudgetValue(parseFloat(e.target.value))}
+              style={{ width: '80px' }}
+              placeholder='new budget'
+            />
+            <button
+              onClick={() => {
+                setNewBudget(earnings[0].store_id, newBudgetValue);
+                setNewBudgetValue(null);
+                setShowBudgetForm(false);
+              }}
+            >
+              Set
+            </button>
+            <button
+              onClick={() => {
+                setShowBudgetForm(false);
+                setNewBudgetValue(null);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <button onClick={() => setShowBudgetForm(true)}>
+            {/*The actual set new budget button*/}
+            Set New Budget
           </button>
-          <button
-            onClick={() => {
-              setShowBudgetForm(false);
-              setNewBudgetValue(null);
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      ) : (
-        <button onClick={() => setShowBudgetForm(true)}>Set New Budget</button>
-      )}
-      <h4> Earnings so far </h4>
-      <p> ${earningStats.total_earned.toFixed(2)}</p>
-      <h4> Items sold so far </h4>
-      <p> {earningStats.total_sold}</p>
+        )}
+        <h4> Earnings so far </h4>
+        <p> ${earningStats.total_earned.toFixed(2)}</p>
+      </div>
+      <div>
+        <h3>Item Stats</h3>
+        <h4> Items sold so far </h4>
+        <p> {earningStats.total_sold}</p>
+        <h4>Item Popularity</h4>
+        {/**graph to show how many of each item is sold to guage item popularity */}
+        <BarChart width={'90%'} height={350} data={earnings}>
+          <CartesianGrid strokeDasharray='3 3' />
+          <XAxis dataKey='item_name'>
+            <Label value='Item Name' offset={-8} position='insideBottom' />
+          </XAxis>
+          <YAxis>
+            <Label
+              value='Number sold'
+              angle={-90}
+              position='insideLeft'
+              style={{ textAnchor: 'middle' }}
+            />
+          </YAxis>
+          <Tooltip />
+          <Bar dataKey='item_count' fill='#8884d8' />
+        </BarChart>
+      </div>
     </div>
   );
 }
