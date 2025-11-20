@@ -34,9 +34,13 @@ export async function GET(
   }
 }
 
-export async function PATCH(request: NextRequest) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ store_id: string }> }
+) {
+  const { store_id } = await params;
   const body = await request.json();
-  const { store_id, ingredient_name, amount_to_add } = body;
+  const { ingredient_name, amount_to_add } = body;
 
   if (!store_id || !ingredient_name || !amount_to_add) {
     console.log(store_id, '|', ingredient_name, '|', amount_to_add, '|');

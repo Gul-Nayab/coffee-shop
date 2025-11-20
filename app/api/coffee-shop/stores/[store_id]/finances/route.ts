@@ -36,9 +36,13 @@ export async function GET(
   }
 }
 
-export async function PATCH(request: NextRequest) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ store_id: string }> }
+) {
+  const { store_id } = await params;
   const body = await request.json();
-  const { store_id, budget } = body;
+  const { budget } = body;
 
   if (!budget || !store_id) {
     return NextResponse.json(

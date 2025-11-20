@@ -59,7 +59,6 @@ function Inventory() {
       const response = await axios.patch(
         `/api/coffee-shop/stores/${user?.store_id}/inventory/`,
         {
-          store_id,
           ingredient_name,
           amount_to_add,
         }

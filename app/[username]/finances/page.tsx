@@ -89,7 +89,7 @@ function Earnings() {
     try {
       const response = await axios.patch(
         `/api/coffee-shop/stores/${store_id}/finances`,
-        { store_id, budget: newBudget },
+        { budget: newBudget },
         {
           timeout: 5000,
         }
