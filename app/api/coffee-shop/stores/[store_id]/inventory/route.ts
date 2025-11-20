@@ -110,7 +110,7 @@ export async function PATCH(request: NextRequest) {
     await connection.rollback();
     console.error('Transaction failed:', err);
     return NextResponse.json(
-      { error: err.message || 'Transaction failed' },
+      { error: err.message || 'Failed to updated inventory' },
       { status: 500 }
     );
   } finally {

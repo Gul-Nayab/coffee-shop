@@ -84,8 +84,21 @@ function Earnings() {
     fetchEarnings();
   }, [user?.store_id]);
 
-  function setNewBudget(store_id: number, newBudget: number) {
+  async function setNewBudget(store_id: number, newBudget: number) {
     console.log('store_id:', store_id, 'budget: ', newBudget);
+    try {
+      const response = await axios.patch(
+        `/api/coffee-shop/stores/${store_id}/finances`,
+        { store_id, budget: newBudget },
+        {
+          timeout: 5000,
+        }
+      );
+      await getStoreBudget(store_id);
+      alert(`${response.data.message}`);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   if (status === 'loading' || loading) return <div>Loading...</div>;

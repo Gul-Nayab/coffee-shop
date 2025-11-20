@@ -35,3 +35,42 @@ export async function GET(
     );
   }
 }
+
+export async function PATCH(request: NextRequest) {
+  const body = await request.json();
+  const { store_id, budget } = body;
+
+  if (!budget || !store_id) {
+    return NextResponse.json(
+      { error: 'budget or store_id not provided, no change implemented' },
+      { status: 400 }
+    );
+  }
+
+  const connection = await getConnection();
+  try {
+    await connection.beginTransaction();
+
+    await connection.query(
+      `UPDATE coffee_shop SET budget = ? 
+      WHERE store_id = ?`,
+      [budget, store_id]
+    );
+
+    await connection.commit();
+
+    return NextResponse.json({
+      message: 'Inventory updated successfully',
+      budget: budget,
+    });
+  } catch (err: any) {
+    await connection.rollback();
+    console.error('Transaction failed:', err);
+    return NextResponse.json(
+      { error: err.message || 'Failed to update budget' },
+      { status: 500 }
+    );
+  } finally {
+    connection.release();
+  }
+}
