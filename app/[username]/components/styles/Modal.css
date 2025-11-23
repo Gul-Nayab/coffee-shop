@@ -1,0 +1,74 @@
+/* ===== Modal Overlay ===== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+  cursor: pointer;
+}
+
+/* ===== Modal Container ===== */
+.modal-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+/* ===== Modal Box ===== */
+.modal-content {
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  animation: fadeInUp 0.3s ease;
+}
+
+/* ===== Title ===== */
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #222;
+}
+
+/* ===== Body ===== */
+.modal-body {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* ===== Close Button ===== */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: #000;
+}
+
+/* ===== Animation ===== */
+@keyframes fadeInUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
