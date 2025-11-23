@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Modal from './Modal'; // your existing no-animation Modal
+import Modal from './Modal';
 
 interface AccountActionFormProps {
   isOpen: boolean;
   onClose: () => void;
   action: 'password' | 'edit' | 'delete' | null;
   user: any;
+  username: string;
   userType: 'customer' | 'barista' | 'manager' | 'student';
   onSuccess?: () => void;
 }
@@ -16,6 +17,7 @@ const AccountActionForm: React.FC<AccountActionFormProps> = ({
   onClose,
   action,
   user,
+  username,
   userType,
   onSuccess,
 }) => {
@@ -60,11 +62,13 @@ const AccountActionForm: React.FC<AccountActionFormProps> = ({
 
     setLoading(true);
     try {
-      await axios.patch(`/api/users/${user.username}/`, {
-        oldPassword,
+      await axios.patch(`/api/coffee-shop/users/${username}/`, {
         newPassword,
       });
       alert('Password updated successfully!');
+      setNewPassword('');
+      setOldPassword('');
+      setConfirmPassword('');
       onClose();
       onSuccess?.();
     } catch (err) {
@@ -79,7 +83,9 @@ const AccountActionForm: React.FC<AccountActionFormProps> = ({
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.patch(`/api/users/${user.username}/type/`, editForm);
+      await axios.patch(`/api/coffee-shop/users/${username}/type/`, {
+        newInfo: editForm,
+      });
       alert('Information updated successfully!');
       onClose();
       onSuccess?.();
@@ -94,13 +100,16 @@ const AccountActionForm: React.FC<AccountActionFormProps> = ({
   const handleDeleteAccount = async () => {
     setLoading(true);
     try {
-      await axios.delete(`/api/users/${user.username}/`);
+      const response = await axios.delete(
+        `/api/coffee-shop/users/${username}/`
+      );
+      console.log('Response:', response.data);
       alert('Account deleted.');
       onClose();
       window.location.href = '/';
     } catch (err) {
       console.error(err);
-      alert('Failed to delete account.');
+      alert('Failed to delete account.\n', err);
     } finally {
       setLoading(false);
     }

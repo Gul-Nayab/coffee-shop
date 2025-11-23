@@ -50,8 +50,21 @@ export async function PATCH(
 
   const connection = await getConnection();
   try {
-    // await connection.beginTransaction();
-    // await connection.commit();
+    await connection.beginTransaction();
+
+    const result = await connection.query(
+      `update User
+      set password = ?
+      where username = ?`,
+      [newPassword, username]
+    );
+    if (result.affectedRows === 0) {
+      return NextResponse.json(
+        { error: `No user found with username '${username}'` },
+        { status: 404 }
+      );
+    }
+    await connection.commit();
     return NextResponse.json({ message: 'Password changed!' });
   } catch (error: unknown) {
     await connection.rollback();
@@ -71,19 +84,22 @@ export async function DELETE(
 ) {
   try {
     const { username } = await params;
-    console.log('username: ', username);
     if (!username) {
       return NextResponse.json(
         { error: 'Username is required' },
         { status: 400 }
       );
     }
-
-    // const user = await query();
-    // if (user.length === 0) {
-    //   return NextResponse.json({ message: 'User not found' }, { status: 404 });
-    // }
-    return NextResponse.json({ message: 'User deleted successfully' }); // Return the found user
+    const result = await query(`delete from user where username = ?`, [
+      username,
+    ]);
+    if (result.affectedRows === 0) {
+      return NextResponse.json(
+        { error: `No user found with username '${username}'` },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json({ message: 'User deleted successfully' });
   } catch (error: unknown) {
     console.error('Database error:', error);
     return NextResponse.json(

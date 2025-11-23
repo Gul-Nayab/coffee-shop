@@ -54,8 +54,49 @@ export async function PATCH(
 
   const connection = await getConnection();
   try {
-    // await connection.beginTransaction();
-    // await connection.commit();
+    await connection.beginTransaction();
+    if (newInfo.name) {
+      await connection.query(
+        `update user
+        set name = ?
+        where username = ?`,
+        [newInfo.name, username]
+      );
+    }
+    if (newInfo.phone_number) {
+      await connection.query(
+        `update customer
+        set phone_number = ?
+        where username = ?;`,
+        [newInfo.phone_number, username]
+      );
+    }
+    if (newInfo.student_id) {
+      await connection.query(
+        `update customer
+        set student_id = ?
+        where username = ?`,
+        [newInfo.student_id, username]
+      );
+    }
+    if (newInfo.salary) {
+      await connection.query(
+        `update employee
+        set salary = ?
+        where username = ?`,
+        [newInfo.salary, username]
+      );
+    }
+    if (newInfo.store_id) {
+      await connection.query(
+        `update employee
+        set store_id = ?
+        where username = ?;`,
+        [newInfo.store_id, username]
+      );
+    }
+
+    await connection.commit();
     return NextResponse.json({ message: 'Information edited!' });
   } catch (error: unknown) {
     await connection.rollback();

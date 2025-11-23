@@ -10,7 +10,7 @@ import AccountActionModal from '../components/AccountActionsForm';
 function AccountPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { user, userType, loading } = useUser();
+  const { user, username, userType, loading } = useUser();
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [action, setAction] = useState<'password' | 'edit' | 'delete' | null>(
@@ -51,6 +51,7 @@ function AccountPage() {
           onClose={() => setModalOpen(false)}
           action={action}
           user={user}
+          username={username}
           userType={userType}
           onSuccess={() => router.refresh()}
         />
