@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useUser } from './UserContext';
+import Link from 'next/link';
 
 function Dashboard() {
   const router = useRouter();
@@ -17,7 +18,9 @@ function Dashboard() {
 
   return (
     <div>
-      <h1> Welcome, {user?.name}</h1>
+      <h1>
+        Welcome <Link href={`/${username}/account`}>{user?.name}</Link>
+      </h1>
       {/** the actions the user can take*/}
       {userType === 'customer' || userType === 'student' ? (
         <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -58,7 +61,6 @@ function Dashboard() {
             }}
             onClick={() => router.push(`/${username}/shifts`)}
           >
-            {' '}
             View Shifts
           </div>
           <div
