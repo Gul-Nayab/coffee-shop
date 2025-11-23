@@ -1,8 +1,9 @@
 'use client';
 
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import axios from 'axios';
 
 interface CoffeeShop {
   store_id: number;
@@ -85,194 +86,209 @@ function CreateAccount() {
     router.push(`/auth/login`);
   };
   return (
-    <div>
-      <h1>Create Account</h1>
-      <form onSubmit={handleSubmit}>
-        {/* pick employee or customer */}
-        <label>
-          <input
-            type='radio'
-            name='user_type'
-            value='employee'
-            checked={userType === 'employee'}
-            onChange={() => setUserType('employee')}
-          />
-          Employee
-        </label>
-        <label>
-          <input
-            type='radio'
-            name='user_type'
-            value='customer'
-            checked={userType === 'customer'}
-            onChange={() => setUserType('customer')}
-          />
-          Customer
-        </label>
+    <>
+      {/*navbar*/}
+      <div>
+        <Image
+          src='/images/SJCoffeeLogo.png'
+          width={100}
+          height={100}
+          alt='logo'
+          onClick={() => router.push(`/`)}
+        />
+        <button onClick={() => router.push(`/auth/create`)}>Sign Up</button>
+        <button onClick={() => router.push(`/auth/login`)}>Login In</button>
+      </div>
+      {/*Body */}
+      <div>
+        <h1>Create Account</h1>
+        <form onSubmit={handleSubmit}>
+          {/* pick employee or customer */}
+          <label>
+            <input
+              type='radio'
+              name='user_type'
+              value='employee'
+              checked={userType === 'employee'}
+              onChange={() => setUserType('employee')}
+            />
+            Employee
+          </label>
+          <label>
+            <input
+              type='radio'
+              name='user_type'
+              value='customer'
+              checked={userType === 'customer'}
+              onChange={() => setUserType('customer')}
+            />
+            Customer
+          </label>
 
-        {/* Name input field */}
-        <label>
-          Name
-          <input
-            type='text'
-            placeholder='enter your name'
-            id='name-input'
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
-          />
-        </label>
-        <br />
+          {/* Name input field */}
+          <label>
+            Name
+            <input
+              type='text'
+              placeholder='enter your name'
+              id='name-input'
+              onChange={(e) => setUser({ ...user, name: e.target.value })}
+            />
+          </label>
+          <br />
 
-        {userType === 'customer' && (
-          <>
-            <label>
-              Phone Number
-              <input
-                type='text'
-                placeholder='enter your phone number'
-                id='phone-number-input'
-                onChange={(e) =>
-                  setCustomerUser({
-                    ...customer,
-                    phone_number: parseInt(e.target.value.trim()),
-                  })
-                }
-              />
-            </label>
-            <label>
-              Student ID
-              <input
-                type='text'
-                placeholder='enter your student id'
-                id='student-id-input'
-                onChange={(e) =>
-                  setCustomerUser({
-                    ...customer,
-                    student_id: parseInt(e.target.value.trim()),
-                  })
-                }
-              />
-            </label>
-            <br />
-          </>
-        )}
-        {userType === 'employee' && (
-          <>
-            {/*Employee Type dropdown */}
-            <label>
-              Role:
-              <select
-                value={employeeType}
-                onChange={(e) => {
-                  {
-                    setEmployeeType(e.target.value as 'barista' | 'manager');
+          {userType === 'customer' && (
+            <>
+              <label>
+                Phone Number
+                <input
+                  type='text'
+                  placeholder='enter your phone number'
+                  id='phone-number-input'
+                  onChange={(e) =>
+                    setCustomerUser({
+                      ...customer,
+                      phone_number: parseInt(e.target.value.trim()),
+                    })
+                  }
+                />
+              </label>
+              <label>
+                Student ID
+                <input
+                  type='text'
+                  placeholder='enter your student id'
+                  id='student-id-input'
+                  onChange={(e) =>
+                    setCustomerUser({
+                      ...customer,
+                      student_id: parseInt(e.target.value.trim()),
+                    })
+                  }
+                />
+              </label>
+              <br />
+            </>
+          )}
+          {userType === 'employee' && (
+            <>
+              {/*Employee Type dropdown */}
+              <label>
+                Role:
+                <select
+                  value={employeeType}
+                  onChange={(e) => {
+                    {
+                      setEmployeeType(e.target.value as 'barista' | 'manager');
+                      setEmployeeUser({
+                        ...employee,
+                        is_manager: e.target.value === 'manager' ? true : false,
+                      });
+                    }
+                  }}
+                >
+                  <option value='barista'>Barista</option>
+                  <option value='manager'>Manager</option>
+                </select>
+              </label>
+
+              <label>
+                Employee ID
+                <input
+                  type='text'
+                  placeholder='enter your employee ID'
+                  id='employee-id-input'
+                  onChange={(e) => {
                     setEmployeeUser({
                       ...employee,
-                      is_manager: e.target.value === 'manager' ? true : false,
+                      employee_id: parseInt(e.target.value),
                     });
-                  }
-                }}
-              >
-                <option value='barista'>Barista</option>
-                <option value='manager'>Manager</option>
-              </select>
-            </label>
-
-            <label>
-              Employee ID
-              <input
-                type='text'
-                placeholder='enter your employee ID'
-                id='employee-id-input'
-                onChange={(e) => {
-                  setEmployeeUser({
-                    ...employee,
-                    employee_id: parseInt(e.target.value),
-                  });
-                }}
-              />
-            </label>
-            <br />
-            {employeeType === 'manager' ? (
-              <label>
-                Salary
-                <input
-                  type='text'
-                  placeholder='enter your biweekly salary'
-                  id='salary-input'
-                  onChange={(e) =>
-                    setEmployeeUser({
-                      ...employee,
-                      salary: parseFloat(e.target.value),
-                    })
-                  }
+                  }}
                 />
               </label>
-            ) : (
+              <br />
+              {employeeType === 'manager' ? (
+                <label>
+                  Salary
+                  <input
+                    type='text'
+                    placeholder='enter your biweekly salary'
+                    id='salary-input'
+                    onChange={(e) =>
+                      setEmployeeUser({
+                        ...employee,
+                        salary: parseFloat(e.target.value),
+                      })
+                    }
+                  />
+                </label>
+              ) : (
+                <label>
+                  Salary
+                  <input
+                    type='text'
+                    placeholder='enter your hourly salary'
+                    id='salary-barista-input'
+                    onChange={(e) =>
+                      setEmployeeUser({
+                        ...employee,
+                        salary: parseFloat(e.target.value),
+                      })
+                    }
+                  />
+                </label>
+              )}
               <label>
-                Salary
-                <input
-                  type='text'
-                  placeholder='enter your hourly salary'
-                  id='salary-barista-input'
-                  onChange={(e) =>
+                Pick the store you work for
+                <select
+                  value={employerStoreID}
+                  onChange={(e) => {
+                    setEmployerStoreID(parseInt(e.target.value));
                     setEmployeeUser({
                       ...employee,
-                      salary: parseFloat(e.target.value),
-                    })
-                  }
-                />
+                      store_id: parseInt(e.target.value),
+                    });
+                  }}
+                >
+                  <option value=''>Select a store</option>
+                  {stores.map((store) => (
+                    <option key={store.store_id} value={store.store_id}>
+                      {store.name}
+                    </option>
+                  ))}
+                </select>
               </label>
-            )}
-            <label>
-              Pick the store you work for
-              <select
-                value={employerStoreID}
-                onChange={(e) => {
-                  setEmployerStoreID(parseInt(e.target.value));
-                  setEmployeeUser({
-                    ...employee,
-                    store_id: parseInt(e.target.value),
-                  });
-                }}
-              >
-                <option value=''>Select a store</option>
-                {stores.map((store) => (
-                  <option key={store.store_id} value={store.store_id}>
-                    {store.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </>
-        )}
-        <label>
-          Create Username
-          <input
-            type='text'
-            placeholder='enter a username'
-            id='username-input'
-            onChange={(e) => {
-              setUser({ ...user, username: e.target.value });
-              setCustomerUser({ ...customer, username: e.target.value });
-              setEmployeeUser({ ...employee, username: e.target.value });
-            }}
-          />
-        </label>
-        <br />
-        <label>
-          Create Password
-          <input
-            type='text'
-            placeholder='enter a password'
-            id='password-input'
-            onChange={(e) => setUser({ ...user, password: e.target.value })} //save it hashed
-          />
-        </label>
-        <br />
+            </>
+          )}
+          <label>
+            Create Username
+            <input
+              type='text'
+              placeholder='enter a username'
+              id='username-input'
+              onChange={(e) => {
+                setUser({ ...user, username: e.target.value });
+                setCustomerUser({ ...customer, username: e.target.value });
+                setEmployeeUser({ ...employee, username: e.target.value });
+              }}
+            />
+          </label>
+          <br />
+          <label>
+            Create Password
+            <input
+              type='text'
+              placeholder='enter a password'
+              id='password-input'
+              onChange={(e) => setUser({ ...user, password: e.target.value })} //save it hashed
+            />
+          </label>
+          <br />
 
-        <button type='submit'>Create Account</button>
-      </form>
-    </div>
+          <button type='submit'>Create Account</button>
+        </form>
+      </div>
+    </>
   );
 }
 export default CreateAccount;
