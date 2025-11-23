@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { query } from '@/app/lib/db';
+import { query, getConnection } from '@/app/lib/db';
 
 export async function GET(
   request: NextRequest,
@@ -34,5 +34,37 @@ export async function GET(
       { error: 'Failed to fetch user ' },
       { status: 500 }
     );
+  }
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ username: string }> }
+) {
+  const { username } = await params;
+  const body = await request.json();
+  const { newInfo } = body;
+
+  if (!username || !newInfo) {
+    return NextResponse.json(
+      { error: 'newInfo and username is required' },
+      { status: 400 }
+    );
+  }
+
+  const connection = await getConnection();
+  try {
+    // await connection.beginTransaction();
+    // await connection.commit();
+    return NextResponse.json({ message: 'Information edited!' });
+  } catch (error: unknown) {
+    await connection.rollback();
+    console.error('Transaction failed:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to edit user info' },
+      { status: 500 }
+    );
+  } finally {
+    connection.release();
   }
 }
