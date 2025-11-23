@@ -38,3 +38,64 @@ export async function GET(
     );
   }
 }
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ store_id: string }> }
+) {
+  const { store_id } = await params;
+  const body = await request.json();
+  const { employee_id, date, start_time, end_time } = body;
+
+  if (!store_id || !employee_id || !date || !start_time || !end_time) {
+    return NextResponse.json(
+      {
+        error:
+          'store_id, employee_id, date, start_time, and end_time are required',
+      },
+      { status: 400 }
+    );
+  }
+
+  const connection = await getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    // create new shift
+    await connection.query(
+      `INSERT INTO shifts (employee_id, start_time, end_time, date, store_id)
+       VALUES (?, ?, ?, ?, ?)`,
+      [employee_id, start_time, end_time, date, store_id]
+    );
+
+    //compute hours to add for employee
+    const [start_hours, start_min] = start_time.split(':').map(Number);
+    const [end_hours, end_min] = end_time.split(':').map(Number);
+    const shiftHours =
+      end_hours + end_min / 60 - (start_hours + start_min / 60);
+
+    //update hours
+    await connection.query(
+      `UPDATE employee
+       SET hours = COALESCE(hours, 0) + ?
+       WHERE employee_id = ? AND store_id = ?`,
+      [shiftHours, employee_id, store_id]
+    );
+
+    await connection.commit();
+
+    return NextResponse.json({
+      message: 'Shift assigned and employee hours updated successfully.',
+    });
+  } catch (error: any) {
+    await connection.rollback();
+    console.error('Transaction failed:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to create shift' },
+      { status: 500 }
+    );
+  } finally {
+    connection.release();
+  }
+}
