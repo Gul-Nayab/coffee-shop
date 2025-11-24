@@ -45,19 +45,20 @@ function Menu({ store_id, onItemClick }: MenuProps) {
   function handleOrder(item: MenuItem) {
     if (onItemClick) {
       onItemClick(item);
+      return;
     }
     const existing = JSON.parse(localStorage.getItem('cart') || '[]');
     const updated = [...existing, item];
     localStorage.setItem('cart', JSON.stringify(updated));
 
     console.log(updated);
-    // router.push(`/${username}/cart`);
+    router.push(`/${username}/cart`);
   }
 
   return (
     <div className='menu-container'>
       {/*Menu Item container */}
-      {userType === 'customer' &&
+      {(userType === 'customer' || userType === 'student') &&
         menu.map((item) => (
           <div
             key={item.item_name}
@@ -70,7 +71,11 @@ function Menu({ store_id, onItemClick }: MenuProps) {
             {item.ingredients.length > 0 && (
               <p>{item.ingredients.join(', ')}</p>
             )}
-            <p>${item.price}</p>
+            {userType === 'student' ? (
+              <p>${(parseFloat(item.price) * 0.9).toFixed(2)}</p>
+            ) : (
+              <p>${item.price}</p>
+            )}
           </div>
         ))}
     </div>

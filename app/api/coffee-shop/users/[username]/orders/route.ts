@@ -15,7 +15,8 @@ export async function GET(
     }
 
     const orders = await query(
-      `SELECT o.username, o.store_id, o.item_name, o.order_total, c.name FROM orders o 
+      `SELECT o.username, o.store_id, o.item_name, o.order_total, o.quantity, o.order_id,
+      c.name FROM orders o 
       LEFT OUTER JOIN coffeeshop c ON c.store_id = o.store_id WHERE username = ?`,
       [username]
     );
@@ -41,14 +42,11 @@ export async function POST(
 ) {
   const { username } = await params;
   const body = await request.json();
-  const { items } = body;
+  const { items, type } = body;
 
-  if (!username || !items) {
+  if (!username || !items || items.length === 0) {
     return NextResponse.json(
-      {
-        error:
-          'store_id, employee_id, date, start_time, and end_time are required',
-      },
+      { error: 'username and items are required' },
       { status: 400 }
     );
   }
@@ -58,30 +56,44 @@ export async function POST(
   try {
     await connection.beginTransaction();
 
-    const values = items.map((item) => [
-      username,
-      item.store_id,
-      item.item_name,
-      (parseFloat(item.price) * (item.quantity ?? 1)).toFixed(2),
-      0,
-    ]);
+    const orderId = Math.floor(10000 + Math.random() * 90000);
 
-    await connection.query(
-      `insert into orders (username, store_id, item_name, order_total, completed)
-   VALUES ?`,
-      [values]
-    );
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+
+      const orderTotal = (
+        parseFloat(item.price) *
+        (item.quantity ?? 1) *
+        (type === 'student' ? 0.9 : 1)
+      ).toFixed(2);
+
+      await connection.query(
+        `INSERT INTO orders 
+         (order_id, username, store_id, item_name, order_total, completed, quantity)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [
+          orderId,
+          username,
+          item.store_id,
+          item.item_name,
+          orderTotal,
+          0,
+          item.quantity ?? 1,
+        ]
+      );
+    }
 
     await connection.commit();
 
     return NextResponse.json({
-      message: 'Shift assigned and employee hours updated successfully.',
+      message: 'Order placed successfully!',
+      order_id: orderId,
     });
   } catch (error: any) {
     await connection.rollback();
     console.error('Transaction failed:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to create shift' },
+      { error: error.message || 'Failed to create order' },
       { status: 500 }
     );
   } finally {

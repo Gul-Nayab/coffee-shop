@@ -25,7 +25,7 @@ interface Store {
 export default function CartPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { user, username, userType, loading } = useUser();
+  const { username, userType, loading } = useUser();
 
   const [cart, setCart] = useState<MenuItem[]>([]);
   const [storeId, setStoreId] = useState<number | null>(null);
@@ -57,7 +57,6 @@ export default function CartPage() {
     if (userType === 'manager') router.push('/auth/login');
   }, [status, router, userType]);
 
-  //load all stores if cart is empty
   useEffect(() => {
     if (cart.length === 0) {
       axios
@@ -68,8 +67,7 @@ export default function CartPage() {
   }, [cart.length]);
 
   function handleRemove(itemName: string) {
-    const updated = cart.filter((item) => item.item_name !== itemName);
-    setCart(updated);
+    setCart(cart.filter((item) => item.item_name !== itemName));
   }
 
   function handleAddItem(newItem: MenuItem) {
@@ -77,13 +75,11 @@ export default function CartPage() {
       const existingIndex = prevCart.findIndex(
         (item) => item.item_name === newItem.item_name
       );
-
       if (existingIndex !== -1) {
         const updated = [...prevCart];
-        const existing = updated[existingIndex];
         updated[existingIndex] = {
-          ...existing,
-          quantity: (existing.quantity || 1) + 1,
+          ...updated[existingIndex],
+          quantity: (updated[existingIndex].quantity || 1) + 1,
         };
         return updated;
       } else {
@@ -101,7 +97,7 @@ export default function CartPage() {
   }
 
   function confirmActionHandler() {
-    if (confirmAction === 'cancel' || confirmAction === 'change') {
+    if (confirmAction) {
       localStorage.removeItem('cart');
       setCart([]);
       setStoreId(null);
@@ -110,16 +106,19 @@ export default function CartPage() {
     }
   }
 
+  const discountRate = userType === 'student' ? 0.9 : 1;
+
   const total = cart.reduce(
-    (sum, i) => sum + parseFloat(i.price) * (i.quantity ?? 1),
+    (sum, i) => sum + parseFloat(i.price) * (i.quantity ?? 1) * discountRate,
     0
   );
 
   async function handleSubmitOrder() {
     try {
+      console.log(cart);
       await axios.post(`/api/coffee-shop/users/${username}/orders`, {
-        username: username,
         items: cart,
+        type: userType,
       });
       alert('Order placed successfully!');
       localStorage.removeItem('cart');
@@ -135,142 +134,152 @@ export default function CartPage() {
   if (status === 'loading' || loading) return <div>Loading...</div>;
 
   return (
-    <div className={`cart-page ${isOrdering ? 'ordering' : ''}`}>
-      <div className='cart-left'>
-        <h1>Your Cart</h1>
+    <div className='cart-page'>
+      <h1 className='cart-title'>Your Cart</h1>
 
-        {!isOrdering && cart.length === 0 ? (
-          <div>
-            <h3>Select a Store</h3>
-            <select
-              value={storeId ?? ''}
-              onChange={(e) => setStoreId(Number(e.target.value))}
-            >
-              <option value=''>-- Choose a store --</option>
-              {stores.map((s) => (
-                <option key={s.store_id} value={s.store_id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-            <button
-              disabled={!storeId}
-              onClick={() => setIsOrdering(true)}
-              style={{ marginLeft: '0.5rem' }}
-            >
-              Begin Order
-            </button>
-          </div>
-        ) : (
-          <>
-            {cart.length === 0 ? (
-              <p className='empty-cart-message'>
-                Your cart is empty. Click items from the menu to add them.
-              </p>
-            ) : (
-              <table className='cart-table'>
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cart.map((item) => (
-                    <tr key={item.item_name}>
-                      <td>
-                        {item.item_name}
-                        {item.quantity && item.quantity > 1 && (
-                          <span style={{ color: '#777', marginLeft: '6px' }}>
-                            × {item.quantity}
-                          </span>
-                        )}
-                      </td>
-                      <td>
-                        $
-                        {(
-                          parseFloat(item.price) * (item.quantity ?? 1)
-                        ).toFixed(2)}
-                      </td>
-                      <td>
-                        <button
-                          onClick={() =>
-                            setCart((prev) =>
-                              prev
-                                .map((i) =>
-                                  i.item_name === item.item_name
-                                    ? {
-                                        ...i,
-                                        quantity: (i.quantity || 1) - 1,
-                                      }
-                                    : i
-                                )
-                                .filter((i) => (i.quantity ?? 1) > 0)
-                            )
-                          }
-                        >
-                          –
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCart((prev) =>
-                              prev.map((i) =>
-                                i.item_name === item.item_name
-                                  ? {
-                                      ...i,
-                                      quantity: (i.quantity || 1) + 1,
-                                    }
-                                  : i
-                              )
-                            )
-                          }
-                          style={{ marginLeft: '0.3rem' }}
-                        >
-                          +
-                        </button>
-                        <button
-                          onClick={() => handleRemove(item.item_name)}
-                          style={{ marginLeft: '0.5rem', color: 'red' }}
-                        >
-                          ✕
-                        </button>
-                      </td>
+      <div className='cart-layout'>
+        {/* LEFT SIDE */}
+        <div className='cart-left'>
+          {!isOrdering && cart.length === 0 ? (
+            <div className='store-select'>
+              <h3>Select a Store</h3>
+              <select
+                value={storeId ?? ''}
+                onChange={(e) => setStoreId(Number(e.target.value))}
+              >
+                <option value=''>-- Choose a store --</option>
+                {stores.map((s) => (
+                  <option key={s.store_id} value={s.store_id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                disabled={!storeId}
+                onClick={() => setIsOrdering(true)}
+                className='begin-btn'
+              >
+                Begin Order
+              </button>
+            </div>
+          ) : (
+            <div>
+              {cart.length === 0 ? (
+                <p className='empty-cart-message'>
+                  Your cart is empty. Click items from the menu to add them.
+                </p>
+              ) : (
+                <table className='cart-table'>
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Price</th>
+                      <th></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+                  </thead>
+                  <tbody>
+                    {cart.map((item) => {
+                      const discountedPrice =
+                        parseFloat(item.price) * discountRate;
+                      const totalItemPrice =
+                        discountedPrice * (item.quantity ?? 1);
+                      return (
+                        <tr key={item.item_name}>
+                          <td>
+                            {item.item_name}
+                            {item.quantity && item.quantity > 1 && (
+                              <span className='quantity-text'>
+                                × {item.quantity}
+                              </span>
+                            )}
+                          </td>
+                          <td>${totalItemPrice.toFixed(2)}</td>
+                          <td>
+                            <button
+                              onClick={() =>
+                                setCart((prev) =>
+                                  prev
+                                    .map((i) =>
+                                      i.item_name === item.item_name
+                                        ? {
+                                            ...i,
+                                            quantity: (i.quantity || 1) - 1,
+                                          }
+                                        : i
+                                    )
+                                    .filter((i) => (i.quantity ?? 1) > 0)
+                                )
+                              }
+                            >
+                              –
+                            </button>
+                            <button
+                              onClick={() =>
+                                setCart((prev) =>
+                                  prev.map((i) =>
+                                    i.item_name === item.item_name
+                                      ? {
+                                          ...i,
+                                          quantity: (i.quantity || 1) + 1,
+                                        }
+                                      : i
+                                  )
+                                )
+                              }
+                              className='plus-btn'
+                            >
+                              +
+                            </button>
+                            <button
+                              onClick={() => handleRemove(item.item_name)}
+                              className='delete-btn'
+                            >
+                              ✕
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
 
-            <div style={{ marginTop: '1rem' }}>
-              <strong>Total: </strong>${total.toFixed(2)}
-            </div>
+              <div className='cart-summary'>
+                <strong>Total: </strong>${total.toFixed(2)}
+                {userType === 'student' && (
+                  <span className='discount-text'>
+                    {' '}
+                    (10% student discount applied)
+                  </span>
+                )}
+              </div>
 
-            <div style={{ marginTop: '1rem' }}>
-              <button onClick={handleSubmitOrder}>Submit Order</button>
+              <div className='cart-actions'>
+                <button onClick={() => setIsOrdering(true)}> Open Menu</button>
+                <button onClick={handleSubmitOrder}>Submit Order</button>
+                <button onClick={handleChangeStore}>Change Store</button>
+                <button onClick={handleCancelOrder}>Cancel Order</button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {isOrdering && storeId && (
+          <div className='menu-panel'>
+            <div className='menu-header'>
+              <h3>Menu</h3>
               <button
-                style={{ marginLeft: '0.5rem' }}
-                onClick={handleChangeStore}
+                className='close-menu'
+                onClick={() => setIsOrdering(false)}
               >
-                Choose Different Store
-              </button>
-              <button
-                style={{ marginLeft: '0.5rem' }}
-                onClick={handleCancelOrder}
-              >
-                Cancel Order
+                ✕
               </button>
             </div>
-          </>
+            <Menu store_id={storeId} onItemClick={handleAddItem} />
+          </div>
         )}
       </div>
-      {isOrdering && storeId && (
-        <div className='menu-panel'>
-          <h3>Menu</h3>
-          <Menu store_id={storeId} onItemClick={handleAddItem} />
-        </div>
-      )}
-      {/* Confirmation Modal */}
+
       <Modal
         isOpen={!!confirmAction}
         onClose={() => setConfirmAction(null)}
@@ -283,7 +292,7 @@ export default function CartPage() {
             : 'change to a different store'}
           ? This will clear your cart.
         </p>
-        <div>
+        <div className='modal-actions'>
           <button onClick={confirmActionHandler}>Yes</button>
           <button onClick={() => setConfirmAction(null)}>No</button>
         </div>

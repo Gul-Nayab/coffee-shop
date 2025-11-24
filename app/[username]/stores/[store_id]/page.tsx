@@ -62,7 +62,7 @@ function ACoffeeShop() {
   return (
     <div>
       <h1>Stores</h1>
-      {userType === 'customer' && (
+      {(userType === 'customer' || userType === 'student') && (
         <>
           {/*The store Information */}
           <div>
