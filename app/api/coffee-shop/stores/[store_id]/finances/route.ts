@@ -15,7 +15,7 @@ export async function GET(
     }
 
     const orders = await query(
-      `SELECT store_id, item_name, COUNT(item_name) AS item_count, SUM(order_total) as earnings
+      `SELECT store_id, item_name, SUM(quantity) AS item_count, SUM(order_total) as earnings
       FROM orders WHERE store_id = ? AND completed = TRUE 
       GROUP BY item_name ORDER BY earnings DESC`,
       [store_id]
