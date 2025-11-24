@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       );
     } else {
       await connection.query(
-        `INSERT INTO employee (username, employee_id, hours, store_id, salary, is_manager)
+        `INSERT INTO employee (username, e_id, hours, store_id, salary, is_manager)
       VALUES (?, ?, ?, ?, ?, ?)`,
         [
           username,

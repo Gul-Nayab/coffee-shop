@@ -62,20 +62,21 @@ function CoffeeShops() {
       <div>
         {' '}
         {/*Container for all the store cards */}
-        {userType === 'customer' &&
-          stores.map((store) => (
-            <div
-              key={store.store_id}
-              onClick={() => handleCardClick(store.store_id)}
-            >
-              {/*The store card */}
-              <h3>Store #{store.name}</h3>
-              <p>{store.address}</p>
-              <p>
-                {store.open_time}AM - {store.close_time}PM
-              </p>
-            </div>
-          ))}
+        {userType === 'customer' ||
+          (userType === 'student' &&
+            stores.map((store) => (
+              <div
+                key={store.store_id}
+                onClick={() => handleCardClick(store.store_id)}
+              >
+                {/*The store card */}
+                <h3>Store #{store.name}</h3>
+                <p>{store.address}</p>
+                <p>
+                  {store.open_time}AM - {store.close_time}PM
+                </p>
+              </div>
+            )))}
       </div>
     </div>
   );
