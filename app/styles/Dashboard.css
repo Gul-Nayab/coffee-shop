@@ -1,0 +1,110 @@
+.dashboard-page {
+  background: #fdfbf5;
+  min-height: 100vh;
+  padding: 40px 60px;
+  font-family: "Work Sans", sans-serif;
+  display: block;       /* ← stop auto centering */
+}
+
+.dashboard-container {
+  margin: 0 auto;       /* center whole block */
+}
+
+/* Top banner card */
+.dashboard-header-card {
+  background: #6a4b3a;
+  color: white;
+  padding: 54px 70px;
+  border-radius: 45px;
+  max-width: 1150px; 
+  margin: 0 auto 50px auto;
+}
+
+.dashboard-header-title {
+  font-family: "Playfair Display", serif;
+  font-size: 50px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.dashboard-header-name {
+  font-family: "Playfair Display", serif;
+  color: #ffb15e;
+  font-size: 80px;
+  font-weight: 400;
+  text-decoration: none;
+  margin-left: 6px;
+}
+
+.dashboard-header-title span {
+  color: #ffb15e;
+  font-weight: 800;
+  font-size: 54px;
+}
+
+.dashboard-header-subtext {
+  font-family: "Work Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  opacity: 0.95;
+}
+
+/* Action card container */
+.dashboard-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+  gap: 32px;
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* Each action card */
+.dashboard-action-card {
+  position: relative;
+  width: 100%;               /* card stretches to grid width */
+  height: 300px;
+  border-radius: 16px;       /* make cards curved */
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.dashboard-action-card img {
+  width: 100%;               /* fix image scaling */
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(65%);
+  border-radius: 16px;       /* curve the image too */
+}
+
+/* Card text overlay */
+.dashboard-card-text {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  color: white;
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.dashboard-card-button {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  background: #fffdf5;
+  padding: 14px 28px;
+  border-radius: 40px;
+  color: #573425;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+}
+
+.dashboard-card-button:hover {
+  transform: scale(1.03);
+}
+
+.dashboard-header-name:hover {
+  text-decoration: underline;  /* subtle hover effect */
+  cursor: pointer;
+}
