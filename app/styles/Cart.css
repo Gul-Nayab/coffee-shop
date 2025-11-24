@@ -1,26 +1,47 @@
 .cart-page {
+  min-height: 100vh;
+  background-color: #fffdf5;
   display: flex;
-  transition: all 0.4s ease;
+  flex-direction: column;
+  font-family: 'Work Sans', sans-serif;
 }
 
+/* Title */
+.cart-title {
+  text-align: center;
+  color: #573425;
+  margin: 1.2rem 0;
+  font-size: 28px;
+}
+
+/* Layout */
+.cart-layout {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+}
+
+/* Left side */
 .cart-left {
   flex: 1;
-  padding: 1rem;
-  transition: all 0.3s ease;
+  padding: 1.5rem;
   overflow-y: auto;
+  border-right: 2px solid #ddd;
 }
 
-.menu-panel {
-  width: 50%;
-  border-left: 1px solid #ccc;
-  background: #fafafa;
-  padding: 1rem;
-  overflow-y: auto;
-  transition: transform 0.3s ease;
+.store-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.cart-page.ordering .cart-left {
-  width: calc(100% - 600px);
+.begin-btn {
+  background-color: #573425;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .cart-table {
@@ -33,8 +54,77 @@
 .cart-table td {
   border: 1px solid #ccc;
   padding: 8px;
+  text-align: left;
 }
 
 .cart-table th {
   background: #eee;
+}
+
+.quantity-text {
+  color: #777;
+  margin-left: 6px;
+}
+
+.plus-btn {
+  margin-left: 0.3rem;
+}
+
+.delete-btn {
+  margin-left: 0.5rem;
+  color: red;
+}
+
+.cart-summary {
+  margin-top: 1rem;
+  font-weight: 700;
+}
+
+.cart-actions {
+  margin-top: 1rem;
+}
+
+.cart-actions button {
+  margin-right: 0.5rem;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #573425;
+  color: white;
+  cursor: pointer;
+}
+
+/* Right side (menu) */
+.menu-panel {
+  width: 45%;
+  border-left: 2px solid #ccc;
+  background: #fafafa;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: relative;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-menu {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #573425;
+  font-weight: bold;
+}
+
+/* Modal buttons */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1rem;
 }
