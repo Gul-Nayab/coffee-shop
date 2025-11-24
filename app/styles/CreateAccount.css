@@ -1,0 +1,160 @@
+.create-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url('/images/coffee-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.banner {
+  background-color: #e38933;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.brown-line {
+  height: 4px;
+  background-color: #4c352b;
+}
+
+.title-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+}
+
+.card-row {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12px 16px 40px;
+}
+
+.card {
+  width: 100%;
+  max-width: 520px;
+  background: #fffdf5ee;
+  border: 2px solid #573425;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tabs-wrap {
+  display: inline-flex;
+  border: 2px solid #573425;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fffdf5;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.tab-btn {
+  padding: 10px 18px;
+  font-weight: 800;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  color: #573425;
+  background: transparent;
+}
+
+.tab-btn.active {
+  background: #573425;
+  color: #fff;
+}
+
+.inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0 24px;
+}
+
+.section-title {
+  margin: 18px 0 12px 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: #573425;
+  text-align: center;
+  width: 400px;
+}
+
+.group-title {
+  margin: 18px 0 10px 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #573425;
+  text-align: left;
+  width: 400px;
+}
+
+.field-row {
+  width: 400px;
+  margin-bottom: 14px;
+}
+
+.input-base,
+.select-base {
+  display: block;
+  width: 100%;
+  height: 54px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 2px solid #573425;
+  background: #fffdf5;
+  color: #573425;
+  outline: none;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  box-sizing: border-box;
+  transition: box-shadow 140ms ease, border-color 120ms ease, transform 60ms ease;
+}
+
+.input-base:focus,
+.select-base:focus {
+  border-color: #573425;
+  box-shadow: 0 0 0 3px rgba(87, 52, 37, 0.22);
+}
+
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.auth-btn {
+    border: none;
+    padding: 10px 30px;
+    border-radius: 999;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    white-space: nowrap;
+    color: #111111;
+}
