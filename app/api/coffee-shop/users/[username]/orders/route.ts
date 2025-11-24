@@ -15,8 +15,8 @@ export async function GET(
     }
 
     const orders = await query(
-      `SELECT o.username, o.store_id, o.item_name, o.order_total, o.quantity, o.order_id,
-      c.name FROM orders o 
+      `SELECT o.pk_order_id, o.username, o.store_id, o.item_name, o.order_total, 
+      o.quantity, o.order_id, c.name FROM orders o 
       LEFT OUTER JOIN coffeeshop c ON c.store_id = o.store_id WHERE username = ?`,
       [username]
     );

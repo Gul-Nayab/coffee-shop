@@ -7,6 +7,7 @@ import axios from 'axios';
 import '@/app/styles/Orders.css';
 
 interface CustomerOrder {
+  pk_order_id: number;
   username: string;
   store_id: number;
   item_name: string;
@@ -17,6 +18,7 @@ interface CustomerOrder {
 }
 
 interface BaristaOrder {
+  pk_order_id: number;
   item_name: string;
   store_id: number;
   completed: boolean;
@@ -69,8 +71,23 @@ function Orders() {
     }
   }, [userType]);
 
-  function handleOrderComplete() {
-    console.log('completed');
+  async function handleOrderComplete(pk_order_id: number) {
+    console.log(pk_order_id, 'completed');
+    try {
+      const response = await axios.patch(
+        `/api/coffee-shop/stores/${user?.store_id}/orders`,
+        { pk_order_id }
+      );
+
+      alert(response.data.message);
+      const refreshed = await axios.get(
+        `/api/coffee-shop/stores/${user?.store_id}/orders/`
+      );
+      setBaristaOrders(refreshed.data);
+    } catch (error) {
+      console.error('Failed to mark order complete:', error);
+      alert('Error updating order status.');
+    }
   }
 
   if (status === 'loading' || loading) return <div>Loading...</div>;
@@ -136,8 +153,11 @@ function Orders() {
                 <strong>Store:</strong> {group.store_name}
               </p>
               <ul className='order-items-list'>
-                {group.items.map((item, index) => (
-                  <li key={index} className='order-item'>
+                {group.items.map((item) => (
+                  <li
+                    key={`${group.order_id ?? 'unassigned'}-${item.name}`}
+                    className='order-item'
+                  >
                     {item.name} × {item.quantity} — ${item.subtotal.toFixed(2)}
                   </li>
                 ))}
@@ -160,8 +180,8 @@ function Orders() {
           {baristaOrders.length === 0 ? (
             <p>No active orders right now.</p>
           ) : (
-            baristaOrders.map((order, index) => (
-              <div key={`barista-order-${index}`} className='order-card'>
+            baristaOrders.map((order) => (
+              <div key={order.pk_order_id} className='order-card'>
                 <h3 className='order-id'>Order #{order.order_id}</h3>
                 <p>
                   <strong>Customer:</strong> {order.username}
@@ -176,12 +196,14 @@ function Orders() {
                   <strong>Status:</strong>{' '}
                   {order.completed ? 'Completed' : 'Pending'}
                 </p>
-                <button
-                  className='orders-create-btn'
-                  onClick={() => handleOrderComplete()}
-                >
-                  Set As Completed
-                </button>
+                {!order.completed && (
+                  <button
+                    className='orders-create-btn'
+                    onClick={() => handleOrderComplete(order.pk_order_id)}
+                  >
+                    Set As Completed
+                  </button>
+                )}
               </div>
             ))
           )}
