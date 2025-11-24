@@ -5,8 +5,8 @@
 
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* shift content left */
-  padding-left: 150px;      /* space from left edge */
+  align-items: flex-start; 
+  padding-left: 150px;     
 
   padding-top: 40px;
   color: #573425;
@@ -41,7 +41,7 @@
   border-radius: 30px;
 
   padding: 35px 45px;
-  width: 50%;              /* TAKE UP 2/4 OF THE PAGE */
+  width: 50%;             
   max-width: 600px;
 
   font-size: 22px;
@@ -60,11 +60,11 @@
 
 .account-logo-big {
   position: absolute;
-  right: 0;            /* stay flush on the right */
+  right: 0;          
   top: 130px;
 
-  width: 45vw;         /* 2/4 = half the page width */
-  height: auto;        /* maintain aspect ratio */
+  width: 45vw;        
+  height: auto;       
 
   opacity: 0.9;
   pointer-events: none;
@@ -122,9 +122,6 @@
   transform: translateY(1px);
 }
 
-/* ================================
-   Responsive
-================================ */
 @media (max-width: 900px) {
   .account-logo-big {
     display: none;
