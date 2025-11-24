@@ -41,7 +41,7 @@ function CreateAccount() {
   });
   const [employee, setEmployeeUser] = useState({
     username: '',
-    employee_id: 0,
+    e_id: 0,
     hours: 0,
     store_id: 0,
     salary: 0,
@@ -220,7 +220,7 @@ function CreateAccount() {
                     onChange={(e) =>
                       setEmployeeUser({
                         ...employee,
-                        employee_id: parseInt(e.target.value),
+                        e_id: parseInt(e.target.value),
                       })
                     }
                   />

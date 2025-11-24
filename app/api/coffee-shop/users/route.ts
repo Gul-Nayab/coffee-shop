@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       VALUES (?, ?, ?, ?, ?, ?)`,
         [
           username,
-          kwargs.employee.employee_id,
+          kwargs.employee.e_id,
           kwargs.employee.hours,
           kwargs.employee.store_id,
           kwargs.employee.salary,

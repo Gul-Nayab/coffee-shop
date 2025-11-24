@@ -45,13 +45,12 @@ export async function POST(
 ) {
   const { store_id } = await params;
   const body = await request.json();
-  const { employee_id, date, start_time, end_time } = body;
+  const { e_id, date, start_time, end_time } = body;
 
-  if (!store_id || !employee_id || !date || !start_time || !end_time) {
+  if (!store_id || !e_id || !date || !start_time || !end_time) {
     return NextResponse.json(
       {
-        error:
-          'store_id, employee_id, date, start_time, and end_time are required',
+        error: 'store_id, e_id, date, start_time, and end_time are required',
       },
       { status: 400 }
     );
@@ -66,7 +65,7 @@ export async function POST(
     await connection.query(
       `INSERT INTO shifts (e_id, start_time, end_time, date, store_id)
        VALUES (?, ?, ?, ?, ?)`,
-      [employee_id, start_time, end_time, date, store_id]
+      [e_id, start_time, end_time, date, store_id]
     );
 
     //compute hours to add for employee
@@ -80,7 +79,7 @@ export async function POST(
       `UPDATE employee
        SET hours = COALESCE(hours, 0) + ?
        WHERE e_id = ? AND store_id = ?`,
-      [shiftHours, employee_id, store_id]
+      [shiftHours, e_id, store_id]
     );
 
     await connection.commit();

@@ -8,7 +8,7 @@ import Modal from '../components/Modal';
 
 interface Shift {
   shift_id: number;
-  employee_id: number;
+  e_id: number;
   name: string;
   start_time: string;
   end_time: string;
@@ -17,7 +17,7 @@ interface Shift {
 
 interface Employee {
   name: string;
-  employee_id: number;
+  e_id: number;
 }
 
 function Shifts() {
@@ -72,7 +72,7 @@ function Shifts() {
     setSubmitting(true);
     try {
       await axios.post(`/api/coffee-shop/stores/${user?.store_id}/shifts`, {
-        employee_id: selectedEmployee,
+        e_id: selectedEmployee,
         date,
         start_time: startTime,
         end_time: endTime,
@@ -103,6 +103,11 @@ function Shifts() {
     if (user?.store_id) {
       fetchShifts();
     }
+    console.log('Barista e_id:', user?.e_id);
+    console.log(
+      'Shift e_ids:',
+      shifts.map((s) => s.e_id)
+    );
   }, [user?.store_id]);
 
   useEffect(() => {
@@ -116,7 +121,7 @@ function Shifts() {
       ? filter
         ? shifts.filter((s) => s.name === filter)
         : shifts
-      : shifts.filter((s) => s.name === username);
+      : shifts.filter((s) => s.e_id === user?.e_id);
 
   if (status === 'loading' || loading) return <div>Loading...</div>;
 
@@ -161,7 +166,7 @@ function Shifts() {
                 >
                   <option value=''>Select an Employee</option>
                   {employees.map((emp) => (
-                    <option key={emp.employee_id} value={emp.employee_id}>
+                    <option key={emp.e_id} value={emp.e_id}>
                       {emp.name}
                     </option>
                   ))}
@@ -241,7 +246,7 @@ function Shifts() {
                   {new Date(shift.date).toLocaleDateString('en-US')}
                 </td>
                 <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                  {shift.employee_id}
+                  {shift.e_id}
                 </td>
                 <td style={{ border: '1px solid #ccc', padding: '8px' }}>
                   {shift.name}
