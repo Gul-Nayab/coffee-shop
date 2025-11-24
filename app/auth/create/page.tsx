@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Work_Sans } from 'next/font/google';
+import { useRouter } from 'next/navigation';
 
 const workSans = Work_Sans({
   subsets: ['latin'],
@@ -23,6 +24,7 @@ const FIELD_HEIGHT = 54;
 const RADIUS = 14;
 
 export default function CreateAccountPage() {
+  const router = useRouter();
   const [tab, setTab] = useState<Tab>('customer');
 
   const page: React.CSSProperties = {
@@ -202,7 +204,11 @@ export default function CreateAccountPage() {
           alt='SJ Coffee Logo'
           width={56}
           height={56}
+          onClick={() => router.push(`/`)}
+          style={{ cursor: 'pointer' }}
         />
+        <button onClick={() => router.push(`/auth/create`)}>Sign Up</button>
+        <button onClick={() => router.push(`/auth/login`)}>Login In</button>
       </div>
       <div style={brownLine} />
       <div style={titleWrap}>
