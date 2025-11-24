@@ -1,5 +1,11 @@
 'use client';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import axios from 'axios';
 
 interface User {
@@ -22,6 +28,7 @@ interface UserContextType {
   username: string | null;
   userType: UserType | null;
   loading: boolean;
+  refreshUser: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -29,6 +36,7 @@ const UserContext = createContext<UserContextType>({
   username: null,
   userType: null,
   loading: true,
+  refreshUser: async () => {},
 });
 
 export function UserProvider({
@@ -43,30 +51,34 @@ export function UserProvider({
   const [userType, setUserType] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchUser = useCallback(async () => {
     if (!username) return;
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          `/api/coffee-shop/users/${username}/type`
-        );
-        const user = response.data;
-        setUser(user);
-        if (user.is_manager) setUserType('manager');
-        else if (user.e_id) setUserType('barista');
-        else if (user.student_id) setUserType('student');
-        else setUserType('customer');
-      } catch (err) {
-        console.error('Error fetching user:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUser();
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `/api/coffee-shop/users/${username}/type`
+      );
+      const user = response.data;
+      setUser(user);
+      if (user.is_manager) setUserType('manager');
+      else if (user.e_id) setUserType('barista');
+      else if (user.student_id) setUserType('student');
+      else setUserType('customer');
+    } catch (err) {
+      console.error('Error fetching user:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [username]);
 
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
   return (
-    <UserContext.Provider value={{ user, username, userType, loading }}>
+    <UserContext.Provider
+      value={{ user, username, userType, loading, refreshUser: fetchUser }}
+    >
       {children}
     </UserContext.Provider>
   );
