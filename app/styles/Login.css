@@ -1,0 +1,161 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url('/images/coffee-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.banner {
+  background-color: #e38933;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.brown-line {
+  height: 4px;
+  background-color: #4c352b;
+}
+
+.title-wrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
+}
+
+.card-row {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12px 16px 40px;
+}
+
+.card {
+  width: 100%;
+  max-width: 520px;
+  background: #fffdf5ee;
+  border: 2px solid #573425;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0 24px;
+}
+
+.group-title {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #573425;
+  text-align: left;
+  width: 400px;
+}
+
+.field-row {
+  width: 400px;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.input-base {
+  display: block;
+  width: 100%;
+  height: 54px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 2px solid #573425;
+  background: #fffdf5;
+  color: #573425;
+  outline: none;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  box-sizing: border-box;
+  transition: box-shadow 140ms ease, border-color 120ms ease;
+}
+
+.input-base:focus {
+  border-color: #573425;
+  box-shadow: 0 0 0 3px rgba(87, 52, 37, 0.22);
+}
+
+::placeholder {
+  color: #573425;
+  opacity: 1;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.actions-row {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  width: 400px;
+}
+
+.cta-btn {
+  width: 160px;
+  height: 46px;
+  border-radius: 999px;
+  border: none;
+  background: #573425;
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #3c2a23;
+  transition: all 0.2s ease;
+}
+
+.cta-btn:hover {
+  filter: brightness(0.98);
+}
+
+.cta-btn:active {
+  transform: translateY(1px);
+}
+
+.helper {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: #7a6f69;
+}
+
+.create-link {
+  color: #573425;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.create-link:hover {
+  text-decoration: underline;
+}
