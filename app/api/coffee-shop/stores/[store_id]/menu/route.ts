@@ -50,7 +50,6 @@ export async function GET(
     const result: unknown = Object.values(grouped);
 
     return NextResponse.json(result);
-    // return NextResponse.json(coffeeShop);
   } catch (error: unknown) {
     console.error('Database error:', error);
     return NextResponse.json(

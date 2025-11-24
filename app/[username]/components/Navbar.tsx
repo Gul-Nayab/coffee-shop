@@ -55,14 +55,11 @@ function NavBar() {
             <Link href={`/${username}/stores`} title='See all stores'>
               <IconBuildingStore className='nav-icon' />
             </Link>
-            <li>
-              <Link
-                href={`/${username}/orders`}
-                title='View your order history'
-              >
-                <IconToolsKitchen2 className='nav-icon' />
-              </Link>
-            </li>
+
+            <Link href={`/${username}/orders`} title='View your order history'>
+              <IconToolsKitchen2 className='nav-icon' />
+            </Link>
+
             <Link href={`/${username}/account`} title='Go to your account'>
               <IconUserFilled className='nav-icon' />
             </Link>
