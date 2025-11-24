@@ -1,3 +1,5 @@
+import '@/app/styles/UserAccountInfo.css';
+
 interface Customer {
   name: string;
   username: string;
@@ -29,24 +31,38 @@ interface UserAccountInfoProps {
 }
 
 function UserAccountInfo({ user, type }: UserAccountInfoProps) {
+  function formatPhone(num?: number) {
+    if (!num) return "Not provided";
+
+    const str = num.toString();
+
+    if (str.length !== 10) return str;
+
+    const area = str.slice(0, 3);
+    const mid = str.slice(3, 6);
+    const last = str.slice(6);
+
+    return `(${area}) ${mid} ${last}`;
+  }
+  
   if (type === 'customer' || type === 'student') {
     const customer = user as Customer | Student;
     return (
       <table>
         <tbody>
           <tr>
-            <th>Name</th>
+            <th>Name:</th>
             <td>{customer.name}</td>
           </tr>
           <tr>
-            <th>Phone Number</th>
+            <th>Phone Number:</th>
             <td>
-              {customer.phone_number ? customer.phone_number : 'Not provided'}
+              {formatPhone(customer.phone_number)}
             </td>
           </tr>
           {type == 'student' ? (
             <tr>
-              <th>Student ID</th>
+              <th>Student ID:</th>
               <td>{(customer as Student).student_id}</td>
             </tr>
           ) : null}

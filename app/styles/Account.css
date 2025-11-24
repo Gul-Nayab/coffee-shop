@@ -1,0 +1,132 @@
+.account-page {
+  min-height: 100vh;
+  background: #fdfbf5;
+  font-family: 'Work Sans', sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* shift content left */
+  padding-left: 150px;      /* space from left edge */
+
+  padding-top: 40px;
+  color: #573425;
+}
+
+.account-greeting {
+  font-size: 34px;              
+  font-weight: 700;             
+  color: #000000;
+  margin-top: 50px;               
+  letter-spacing: 0.3px;       
+}
+
+.account-greeting i {
+  font-style: italic;
+  font-weight: 700;
+}
+
+.account-title {
+  font-size: 45px;
+  font-weight: 900;
+  margin-bottom: 80px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-style: italic;
+  margin-top: -4px;
+}
+
+.account-info-box {
+  background: #fffdf5;
+  border: 3px solid #1d1d1d;
+  border-radius: 30px;
+
+  padding: 35px 45px;
+  width: 50%;              /* TAKE UP 2/4 OF THE PAGE */
+  max-width: 600px;
+
+  font-size: 22px;
+  color: #1d1d1d;
+  font-weight: 700;
+
+  box-shadow: none;
+  margin-bottom: 80px;
+  text-align: left;
+}
+
+.account-info-box p {
+  margin: 10px 0;
+  font-weight: 700;
+}
+
+.account-logo-big {
+  position: absolute;
+  right: 0;            /* stay flush on the right */
+  top: 130px;
+
+  width: 45vw;         /* 2/4 = half the page width */
+  height: auto;        /* maintain aspect ratio */
+
+  opacity: 0.9;
+  pointer-events: none;
+  object-fit: contain;
+}
+
+.account-buttons {
+  display: flex;
+  gap: 22px;
+  margin-top: 10px;
+  max-width: 850;
+}
+
+.account-btn {
+  width: 220px;
+  height: 60px;
+
+  border: none;
+  border-radius: 40px;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  cursor: pointer;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.btn-changePassword {
+  background: linear-gradient(to bottom, #e38933, #c55f00);
+}
+
+.btn-editInfo {
+  background: linear-gradient(to bottom, #e38933, #c55f00);
+}
+
+.btn-deleteAccount {
+  background: #7a5647;
+}
+
+.btn-logout {
+  background: linear-gradient(to bottom, #ff2847, #d60022);
+}
+
+.account-btn:hover {
+  filter: brightness(0.95);
+}
+
+.account-btn:active {
+  transform: translateY(1px);
+}
+
+/* ================================
+   Responsive
+================================ */
+@media (max-width: 900px) {
+  .account-logo-big {
+    display: none;
+  }
+}

@@ -1,0 +1,16 @@
+.account-info-grid {
+  display: grid;
+  grid-template-columns: 160px auto; /* label | value */
+  row-gap: 14px;
+  column-gap: 20px;
+
+  margin-top: 15px;
+}
+
+.account-info-label {
+  font-weight: 700;
+}
+
+.account-info-value {
+  font-weight: 700;
+}
