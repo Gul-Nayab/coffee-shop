@@ -43,6 +43,9 @@ function NavBar() {
             <li>
               <Link href={`/${username}/orders`}>Order</Link>
             </li>
+            <li>
+              <Link href={`/${username}/cart`}>Cart</Link>
+            </li>
           </>
         ) : (
           <>

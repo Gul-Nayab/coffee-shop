@@ -1,0 +1,40 @@
+.cart-page {
+  display: flex;
+  transition: all 0.4s ease;
+}
+
+.cart-left {
+  flex: 1;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+}
+
+.menu-panel {
+  width: 50%;
+  border-left: 1px solid #ccc;
+  background: #fafafa;
+  padding: 1rem;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+.cart-page.ordering .cart-left {
+  width: calc(100% - 600px);
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.cart-table th,
+.cart-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.cart-table th {
+  background: #eee;
+}

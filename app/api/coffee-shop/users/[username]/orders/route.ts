@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { query } from '@/app/lib/db';
+import { query, getConnection } from '@/app/lib/db';
 
 export async function GET(
   request: NextRequest,
@@ -32,5 +32,59 @@ export async function GET(
       { error: 'Failed to fetch orders ' },
       { status: 500 }
     );
+  }
+}
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ username: string }> }
+) {
+  const { username } = await params;
+  const body = await request.json();
+  const { items } = body;
+
+  if (!username || !items) {
+    return NextResponse.json(
+      {
+        error:
+          'store_id, employee_id, date, start_time, and end_time are required',
+      },
+      { status: 400 }
+    );
+  }
+
+  const connection = await getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const values = items.map((item) => [
+      username,
+      item.store_id,
+      item.item_name,
+      (parseFloat(item.price) * (item.quantity ?? 1)).toFixed(2),
+      0,
+    ]);
+
+    await connection.query(
+      `insert into orders (username, store_id, item_name, order_total, completed)
+   VALUES ?`,
+      [values]
+    );
+
+    await connection.commit();
+
+    return NextResponse.json({
+      message: 'Shift assigned and employee hours updated successfully.',
+    });
+  } catch (error: any) {
+    await connection.rollback();
+    console.error('Transaction failed:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to create shift' },
+      { status: 500 }
+    );
+  } finally {
+    connection.release();
   }
 }
