@@ -6,6 +6,19 @@ import { useParams, useRouter } from 'next/navigation';
 import { useUser } from '../UserContext';
 import Link from 'next/link';
 import Image from 'next/image';
+import {
+  IconBuildingStore,
+  IconBusinessplan,
+  IconCategory2,
+  IconClock12,
+  IconCoffee,
+  IconLogout,
+  IconShoppingCart,
+  IconShoppingCartFilled,
+  IconTable,
+  IconToolsKitchen2,
+  IconUserFilled,
+} from '@tabler/icons-react';
 
 function NavBar() {
   const router = useRouter();
@@ -19,13 +32,7 @@ function NavBar() {
   if (status === 'loading' || loading) return <div>Loading...</div>;
 
   return (
-    <nav
-      style={{
-        padding: '4px',
-        backgroundColor: '#ebbf7dff',
-        color: '#fff',
-      }}
-    >
+    <nav>
       <ul style={{ display: 'flex', listStyle: 'none', gap: '2rem' }}>
         <Link href={`/${username}/`}>
           <Image
@@ -38,33 +45,49 @@ function NavBar() {
         {userType === 'customer' || userType === 'student' ? (
           <>
             <li>
-              <Link href={`/${username}/stores`}>Stores</Link>
+              <Link href={`/${username}/stores`}>
+                <IconBuildingStore />
+              </Link>
             </li>
             <li>
-              <Link href={`/${username}/orders`}>Order</Link>
+              <Link href={`/${username}/orders`}>
+                <IconToolsKitchen2 />
+              </Link>
             </li>
             <li>
-              <Link href={`/${username}/cart`}>Cart</Link>
+              <Link href={`/${username}/cart`}>
+                <IconShoppingCartFilled color='#1f130f' />
+              </Link>
             </li>
           </>
         ) : (
           <>
             <li>
-              <Link href={`/${username}/`}>Dashboard</Link>
+              <Link href={`/${username}/`}>
+                <IconCoffee />
+              </Link>
             </li>
             <li>
-              <Link href={`/${username}/shifts`}>Shifts</Link>
+              <Link href={`/${username}/shifts`}>
+                <IconClock12 />
+              </Link>
             </li>
             <li>
-              <Link href={`/${username}/inventory`}>Inventory</Link>
+              <Link href={`/${username}/inventory`}>
+                <IconTable />
+              </Link>
             </li>
             {userType === 'manager' ? (
               <li>
-                <Link href={`/${username}/finances`}>Finances</Link>
+                <Link href={`/${username}/finances`}>
+                  <IconBusinessplan />
+                </Link>
               </li>
             ) : (
               <li>
-                <Link href={`/${username}/orders`}>Orders</Link>
+                <Link href={`/${username}/orders`}>
+                  <IconCategory2 />
+                </Link>
               </li>
             )}
           </>
@@ -72,11 +95,13 @@ function NavBar() {
 
         <li>
           <button onClick={() => signOut({ callbackUrl: '/auth/login' })}>
-            Log out
+            <IconLogout />
           </button>
         </li>
         <li>
-          <Link href={`/${username}/account`}>{username}</Link>
+          <Link href={`/${username}/account`}>
+            <IconUserFilled />
+          </Link>
         </li>
       </ul>
     </nav>
