@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { redirect, useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useUser } from '@/app/[username]/UserContext';
 import axios from 'axios';
@@ -19,16 +19,10 @@ interface CoffeeShop {
   vegan: boolean;
 }
 
-interface MenuItem {
-  store_id: number;
-  item_name: string;
-  ingredients: Array<string>;
-}
-
 function ACoffeeShop() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { user, userType, loading } = useUser();
+  const { user, username, userType, loading } = useUser();
   const { store_id } = useParams();
 
   const [store, setStore] = useState<CoffeeShop>();
@@ -65,10 +59,6 @@ function ACoffeeShop() {
     return null;
   }
 
-  function handleOrder() {
-    console.log('order created!');
-  }
-
   return (
     <div>
       <h1>Stores</h1>
@@ -81,15 +71,15 @@ function ACoffeeShop() {
             <p>
               {store?.open_time}AM - {store?.close_time}PM
             </p>
-            <p>Has outlets: {store?.outlets}</p>
+            <p>Has outlets: {store?.outlets ? 'Yes' : 'No'}</p>
             <p>Distance from SJSU: {store?.distance_from_sjsu}</p>
-            <p>Has Seating: {store?.seating}</p>
-            <p>Has Vegan Options: {store?.seating}</p>
+            <p>Has Seating: {store?.seating ? 'Yes' : 'No'}</p>
+            <p>Has Vegan Options: {store?.seating ? 'Yes' : 'No'}</p>
           </div>
           {/*Menu */}
           <div>
             <h3>Here is a Menu!</h3>
-            <button>Create an order</button>
+            <p> Click an item to add it to your cart!</p>
             <Menu store_id={store_id} />
           </div>
         </>

@@ -3,19 +3,24 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/app/[username]/UserContext';
-import axios from 'axios';
 import { IconCookie, IconCup } from '@tabler/icons-react';
+import axios from 'axios';
+import './styles/Menu.css';
 
 interface MenuItem {
   store_id: number;
   item_name: string;
   ingredients: Array<string>;
-  price: number;
+  price: string;
+}
+interface MenuProps {
+  store_id: string | number;
+  onItemClick?: (item: MenuItem) => void;
 }
 
-function Menu({ store_id }: number) {
+function Menu({ store_id, onItemClick }: MenuProps) {
   const router = useRouter();
-  const { user, userType, loading } = useUser();
+  const { user, username, userType, loading } = useUser();
 
   const [menu, setMenu] = useState<MenuItem[]>([]);
 
@@ -37,39 +42,35 @@ function Menu({ store_id }: number) {
     getMenuItems();
   }, [store_id]);
 
-  function handleOrder(item_name: string) {
-    console.log(`${item_name} added to order`);
+  function handleOrder(item: MenuItem) {
+    if (onItemClick) {
+      onItemClick(item);
+    }
+    const existing = JSON.parse(localStorage.getItem('cart') || '[]');
+    const updated = [...existing, item];
+    localStorage.setItem('cart', JSON.stringify(updated));
+
+    console.log(updated);
+    // router.push(`/${username}/cart`);
   }
 
-  //remove inline styles
   return (
-    <div style={{ display: 'flex', gap: '0.5rem' }}>
+    <div className='menu-container'>
       {/*Menu Item container */}
       {userType === 'customer' &&
         menu.map((item) => (
           <div
             key={item.item_name}
-            onClick={() => handleOrder(item.item_name)}
-            style={{
-              border: '1px solid black',
-              padding: '5px',
-              minWidth: '100px',
-              cursor: 'pointer',
-            }}
+            className='menu-item'
+            onClick={() => handleOrder(item)}
           >
             {/* Each item's div */}
-            <div>
-              {item.ingredients.length === 0 ? (
-                <IconCookie size={20} />
-              ) : (
-                <IconCup size={20} />
-              )}
-            </div>
+            {item.ingredients.length === 0 ? <IconCookie /> : <IconCup />}
             <h4>{item.item_name}</h4>
-            {item.ingredients.length !== 0 && (
+            {item.ingredients.length > 0 && (
               <p>{item.ingredients.join(', ')}</p>
             )}
-            <p>{item.price}</p>
+            <p>${item.price}</p>
           </div>
         ))}
     </div>
