@@ -76,6 +76,7 @@ function CreateAccount() {
         },
       });
       alert(`${response.data.message}`);
+      router.push(`/auth/login`);
     } catch (error: unknown) {
       console.error('Error creating account:', error);
       alert(`Error: ${error}`);
@@ -85,7 +86,6 @@ function CreateAccount() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     saveAccount();
-    router.push(`/auth/login`);
   };
 
   return (

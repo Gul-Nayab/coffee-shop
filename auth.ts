@@ -12,9 +12,9 @@ async function getUserFromDb(username: string, password: string) {
     );
     console.log('Response in getUser:', response.data);
     const dbUser = response.data;
-
+    const encodedPassword = Buffer.from(password, 'utf8').toString('base64');
     if (!dbUser || !dbUser.password) return null;
-    if (password !== dbUser.password) return null;
+    if (encodedPassword !== dbUser.password) return null;
 
     return dbUser;
   } catch (error) {

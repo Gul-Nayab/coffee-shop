@@ -30,10 +30,11 @@ export async function POST(request: NextRequest) {
   try {
     await connection.beginTransaction();
 
+    const hashedPassword = Buffer.from(password, 'utf8').toString('base64');
     await connection.query(
       `INSERT INTO user (username, password, name)
       VALUES (?, ?, ?)`,
-      [username, password, name]
+      [username, hashedPassword, name]
     );
 
     if (userType === 'customer') {

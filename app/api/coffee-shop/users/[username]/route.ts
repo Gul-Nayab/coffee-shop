@@ -51,12 +51,13 @@ export async function PATCH(
   const connection = await getConnection();
   try {
     await connection.beginTransaction();
+    const hashedPassword = Buffer.from(newPassword).toString('base64');
 
     const result = await connection.query(
       `update User
       set password = ?
       where username = ?`,
-      [newPassword, username]
+      [hashedPassword, username]
     );
     if (result.affectedRows === 0) {
       return NextResponse.json(
