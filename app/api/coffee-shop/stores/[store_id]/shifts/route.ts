@@ -15,9 +15,9 @@ export async function GET(
     }
 
     const shifts = await query(
-      `SELECT s.shift_id, s.employee_id, u.name, s.start_time, s.end_time, s.date
+      `SELECT s.shift_id, s.e_id, u.name, s.start_time, s.end_time, s.date
        FROM shifts s
-       LEFT OUTER JOIN employee e ON s.employee_id = e.employee_id
+       LEFT OUTER JOIN employee e ON s.e_id = e.e_id
        LEFT OUTER JOIN user u ON u.username = e.username
        WHERE s.store_id = ?
        ORDER BY s.date, s.start_time`,
@@ -64,7 +64,7 @@ export async function POST(
 
     // create new shift
     await connection.query(
-      `INSERT INTO shifts (employee_id, start_time, end_time, date, store_id)
+      `INSERT INTO shifts (e_id, start_time, end_time, date, store_id)
        VALUES (?, ?, ?, ?, ?)`,
       [employee_id, start_time, end_time, date, store_id]
     );
@@ -79,7 +79,7 @@ export async function POST(
     await connection.query(
       `UPDATE employee
        SET hours = COALESCE(hours, 0) + ?
-       WHERE employee_id = ? AND store_id = ?`,
+       WHERE e_id = ? AND store_id = ?`,
       [shiftHours, employee_id, store_id]
     );
 

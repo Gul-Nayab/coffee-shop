@@ -15,7 +15,7 @@ export async function GET(
     }
 
     const coffeeShop = await query(
-      'SELECT * FROM coffee_shop WHERE store_id = ?',
+      'SELECT * FROM coffeeshop WHERE store_id = ?',
       [store_id]
     );
     console.log('coffeeShop in api', coffeeShop);

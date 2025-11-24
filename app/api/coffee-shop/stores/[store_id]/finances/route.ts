@@ -56,7 +56,7 @@ export async function PATCH(
     await connection.beginTransaction();
 
     await connection.query(
-      `UPDATE coffee_shop SET budget = ? 
+      `UPDATE coffeeshop SET budget = ? 
       WHERE store_id = ?`,
       [budget, store_id]
     );

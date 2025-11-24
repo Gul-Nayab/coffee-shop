@@ -16,7 +16,7 @@ export async function GET(
     }
 
     const employees = await query(
-      `SELECT u.name, e.employee_id
+      `SELECT u.name, e.e_id
       FROM employee e 
       LEFT JOIN user u ON u.username = e.username
       WHERE e.store_id = ? AND e.is_manager = false`,
