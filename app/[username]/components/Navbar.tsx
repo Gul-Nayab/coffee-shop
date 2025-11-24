@@ -35,7 +35,7 @@ function NavBar() {
   return (
     <nav className='navbar'>
       <div className='navbar-left'>
-        <Link href={`/${username}/`}>
+        <Link href={`/${username}/`} title='Go to Dashboard'>
           <Image
             src='/images/SJCoffeeLogo.png'
             width={65}
@@ -49,37 +49,45 @@ function NavBar() {
       <div className='navbar-right'>
         {userType === 'customer' || userType === 'student' ? (
           <>
-            <Link href={`/${username}/cart`}>
+            <Link href={`/${username}/cart`} title='See your cart'>
               <IconShoppingCartFilled className='nav-icon' />
             </Link>
-            <Link href={`/${username}/stores`}>
+            <Link href={`/${username}/stores`} title='See all stores'>
               <IconBuildingStore className='nav-icon' />
             </Link>
-            <Link href={`/${username}/account`}>
+            <li>
+              <Link
+                href={`/${username}/orders`}
+                title='View your order history'
+              >
+                <IconToolsKitchen2 className='nav-icon' />
+              </Link>
+            </li>
+            <Link href={`/${username}/account`} title='Go to your account'>
               <IconUserFilled className='nav-icon' />
             </Link>
           </>
         ) : (
           <>
-            <Link href={`/${username}/`}>
+            <Link href={`/${username}/`} title='Go to dashboard'>
               <IconCoffee className='nav-icon' />
             </Link>
-            <Link href={`/${username}/shifts`}>
+            <Link href={`/${username}/shifts`} title='See shifts'>
               <IconClock12 className='nav-icon' />
             </Link>
-            <Link href={`/${username}/inventory`}>
+            <Link href={`/${username}/inventory`} title='See inventory'>
               <IconTable className='nav-icon' />
             </Link>
             {userType === 'manager' ? (
-              <Link href={`/${username}/finances`}>
+              <Link href={`/${username}/finances`} title='View finances'>
                 <IconBusinessplan className='nav-icon' />
               </Link>
             ) : (
-              <Link href={`/${username}/orders`}>
+              <Link href={`/${username}/orders`} title='See pending orders'>
                 <IconCategory2 className='nav-icon' />
               </Link>
             )}
-            <Link href={`/${username}/account`}>
+            <Link href={`/${username}/account`} title='Go to your account'>
               <IconUserFilled className='nav-icon' />
             </Link>
           </>

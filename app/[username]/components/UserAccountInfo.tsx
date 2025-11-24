@@ -16,7 +16,7 @@ interface Employee {
   name: string;
   username: string;
   password: string;
-  employee_id: number;
+  e_id: number;
   hours: number;
   store_id: number;
   salary: number;
@@ -66,7 +66,7 @@ function UserAccountInfo({ user, type }: UserAccountInfoProps) {
         </tr>
         <tr>
           <th>Employee ID</th>
-          <td>{employee.employee_id}</td>
+          <td>{employee.e_id}</td>
         </tr>
         <tr>
           <th>Hours</th>

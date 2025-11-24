@@ -33,7 +33,7 @@ const AccountActionForm: React.FC<AccountActionFormProps> = ({
     name: '',
     phone_number: '',
     student_id: '',
-    employee_id: '',
+    e_id: '',
     store_id: '',
     salary: '',
     is_manager: false,
@@ -45,7 +45,7 @@ const AccountActionForm: React.FC<AccountActionFormProps> = ({
         name: user.name || '',
         phone_number: user.phone_number?.toString() || '',
         student_id: user.student_id?.toString() || '',
-        employee_id: user.employee_id?.toString() || '',
+        e_id: user.e_id?.toString() || '',
         store_id: user.store_id?.toString() || '',
         salary: user.salary?.toString() || '',
         is_manager: user.is_manager || false,
@@ -219,9 +219,9 @@ const AccountActionForm: React.FC<AccountActionFormProps> = ({
                 Employee ID:
                 <input
                   type='text'
-                  value={editForm.employee_id}
+                  value={editForm.e_id}
                   onChange={(e) =>
-                    setEditForm({ ...editForm, employee_id: e.target.value })
+                    setEditForm({ ...editForm, e_id: e.target.value })
                   }
                 />
               </label>

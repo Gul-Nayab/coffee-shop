@@ -6,7 +6,7 @@ interface User {
   name: string;
   username: string;
   password: string;
-  employee_id?: number;
+  e_id?: number;
   hours?: number;
   store_id?: number;
   is_manager: boolean;
@@ -53,7 +53,7 @@ export function UserProvider({
         const user = response.data;
         setUser(user);
         if (user.is_manager) setUserType('manager');
-        else if (user.employee_id) setUserType('barista');
+        else if (user.e_id) setUserType('barista');
         else if (user.student_id) setUserType('student');
         else setUserType('customer');
       } catch (err) {
