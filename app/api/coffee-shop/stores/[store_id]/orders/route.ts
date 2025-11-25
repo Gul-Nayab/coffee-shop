@@ -72,51 +72,48 @@ export async function PATCH(
 
     //get ingredients for this item
     const [ingredients]: any = await connection.query(
-      `SELECT ingredient_name
-       FROM ingredient
-       WHERE item_name = ?`,
+      `SELECT ingredient_name, amount_used
+   FROM ingredient
+   WHERE item_name = ?`,
       [itemName]
     );
 
     if (ingredients.length === 0) {
-      throw new Error(`No ingredients found for item ${itemName}`);
-    }
-
-    // inventory check
-    for (const ingredient of ingredients) {
-      const [inv]: any = await connection.query(
-        `SELECT count
-         FROM inventory
-         WHERE store_id = ? AND ingredient_name = ?`,
-        [store_id, ingredient.ingredient_name]
-      );
-
-      if (inv.length === 0) {
-        throw new Error(
-          `Missing ingredient in inventory: ${ingredient.ingredient_name}`
+      console.log(`Food item: ${itemName} has no ingredients.`);
+    } else {
+      //validate inventory
+      for (const ing of ingredients) {
+        const [inv]: any = await connection.query(
+          `SELECT count FROM inventory
+       WHERE store_id = ? AND ingredient_name = ?`,
+          [store_id, ing.ingredient_name]
         );
+
+        if (inv.length === 0) {
+          throw new Error(`Missing ingredient: ${ing.ingredient_name}`);
+        }
+
+        const available = inv[0].count;
+        const required = (ing.amount_used ?? 0.01) * quantity;
+
+        if (available < required) {
+          throw new Error(
+            `Not enough ${ing.ingredient_name}. Required: ${required.toFixed(
+              4
+            )}, Available: ${available}`
+          );
+        }
       }
 
-      const available = inv[0].count;
-      const required = 0.01 * quantity;
-
-      if (available < required) {
-        throw new Error(
-          `Not enough ${
-            ingredient.ingredient_name
-          }. Required: ${required.toFixed(4)}, Available: ${available}`
+      //deduct inventory
+      for (const ing of ingredients) {
+        await connection.query(
+          `UPDATE inventory
+       SET count = count - ((?) * (ing.amount_used ?? 0.01))
+       WHERE store_id = ? AND ingredient_name = ?`,
+          [quantity, store_id, ing.ingredient_name]
         );
       }
-    }
-
-    //deduct from inventory
-    for (const ingredient of ingredients) {
-      await connection.query(
-        `UPDATE inventory
-         SET count = count - (0.01 * ?)
-         WHERE store_id = ? AND ingredient_name = ?`,
-        [quantity, store_id, ingredient.ingredient_name]
-      );
     }
 
     //update order status

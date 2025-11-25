@@ -33,9 +33,9 @@ export default function CartPage() {
   const [storeId, setStoreId] = useState<number | null>(null);
   const [stores, setStores] = useState<Store[]>([]);
   const [isOrdering, setIsOrdering] = useState(false);
-  const [confirmAction, setConfirmAction] = useState<'cancel' | 'change' | null>(
-    null
-  );
+  const [confirmAction, setConfirmAction] = useState<
+    'cancel' | 'change' | null
+  >(null);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -47,7 +47,11 @@ export default function CartPage() {
         quantity: i.quantity ?? 1,
       }));
       setCart(normalized);
-      if (normalized.length > 0) setStoreId(normalized[0].store_id);
+      if (normalized.length > 0) {
+        console.log(cart);
+        setStoreId(normalized[0].store_id);
+        setIsOrdering(true);
+      }
     }
   }, []);
 

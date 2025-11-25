@@ -104,6 +104,15 @@ function Orders() {
     }
   }, [userType, user?.store_id]);
 
+  useEffect(() => {
+    if (userType === 'barista' && user?.store_id) {
+      axios
+        .get(`/api/coffee-shop/stores/${user.store_id}/inventory`)
+        .then((res) => setInventory(res.data))
+        .catch((err) => console.error('Inventory fetch error:', err));
+    }
+  }, [userType, user?.store_id]);
+
   async function handleOrderComplete(pk_order_id: number) {
     console.log(pk_order_id, 'completed');
     try {
@@ -125,7 +134,8 @@ function Orders() {
 
   function canCompleteOrder(order: BaristaOrder): boolean {
     const requiredIngredients = ingredientsMap[order.item_name];
-    if (!requiredIngredients) return false;
+
+    if (!requiredIngredients || requiredIngredients.length === 0) return true;
 
     for (const ingredient of requiredIngredients) {
       const inv = inventory.find((i) => i.ingredient_name === ingredient);
@@ -133,7 +143,6 @@ function Orders() {
 
       const available = inv.count;
       const required = 0.01 * order.quantity;
-
       if (available < required) return false;
     }
 
@@ -200,10 +209,7 @@ function Orders() {
             const storeClass = storeNameToClass(group.store_name);
 
             return (
-              <article
-                key={key}
-                className={`order-card ${storeClass}`}
-              >
+              <article key={key} className={`order-card ${storeClass}`}>
                 <div className='order-card__image-wrapper'>
                   {/* Background is set in CSS based on store-* class */}
                   <div className='order-card__image' aria-hidden='true' />
