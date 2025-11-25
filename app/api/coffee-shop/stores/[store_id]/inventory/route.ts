@@ -72,7 +72,7 @@ export async function PATCH(
 
     // get budget of the store
     const [storeRows]: any = await connection.query(
-      `SELECT budget FROM coffee_shop WHERE store_id = ?`,
+      `SELECT budget FROM coffeeshop WHERE store_id = ?`,
       [store_id]
     );
 
@@ -87,7 +87,7 @@ export async function PATCH(
 
     // Update budget
     await connection.query(
-      `UPDATE coffee_shop SET budget = budget - ? WHERE store_id = ?`,
+      `UPDATE coffeeshop SET budget = budget - ? WHERE store_id = ?`,
       [total_cost, store_id]
     );
 

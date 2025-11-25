@@ -1,0 +1,79 @@
+/* ============================================
+   MENU CARDS – ORANGE OUTLINE FOR CART VIEW
+   ============================================ */
+
+/* Grid layout for the menu items */
+.menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 10px;
+}
+
+/* Individual menu item card */
+.menu-container .menu-item {
+  background-color: #fffdf8 !important;
+  border: 2px dashed #f9943b !important;  /* 🔶 ORANGE BORDER */
+  border-radius: 20px !important;
+
+  padding: 24px 20px;
+  text-align: center;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.menu-container .menu-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.14);
+  background-color: #fff6eb;
+}
+
+/* Icon at top of card */
+.menu-container .menu-item svg {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 8px;
+  stroke: #573425;
+}
+
+/* Item title */
+.menu-container .menu-item h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #573425;
+  margin: 8px 0 6px;
+}
+
+/* Description / ingredients */
+.menu-container .menu-item p {
+  font-size: 14px;
+  color: #6b4d38;
+  margin: 4px 0;
+}
+
+/* Price (last p) */
+.menu-container .menu-item p:last-of-type {
+  font-size: 16px;
+  font-weight: 700;
+  color: #573425;
+  margin-top: 10px;
+}
+
+/* Small-screen tweak */
+@media (max-width: 600px) {
+  .menu-container {
+    gap: 16px;
+  }
+
+  .menu-container .menu-item {
+    padding: 18px 16px;
+    border-radius: 18px;
+  }
+}

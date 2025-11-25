@@ -1,0 +1,188 @@
+/* ====== PAGE BASE ====== */
+.finance-page {
+  min-height: 100vh;
+  background: #fdfbf5;
+  padding: 40px 80px;
+  font-family: "Work Sans", sans-serif;
+  color: #5b3827;
+}
+
+.finance-inner {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* ====== TITLE & SUBTITLE ====== */
+
+.finance-title {
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.finance-subtitle {
+  font-size: 17px;
+  color: #6f4e37;
+  margin-bottom: 30px;
+}
+
+/* ====== SECTION LABELS ====== */
+.finance-section-label {
+  font-size: 30px;
+  font-weight: 700;
+  margin-top: 26px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.finance-section-label::before {
+  content: "●";
+  font-size: 50px;
+  color: #6f4e37;
+}
+
+/* ====== CARD GRID ====== */
+.finance-grid {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 45px;
+}
+
+/* ====== STAT CARDS ====== */
+
+.finance-card {
+  flex: 1;
+  min-width: 360px;
+  background: #ffffff;
+  border: 2px solid #6a4b3a;
+  border-radius: 26px;
+  padding: 28px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.finance-card-title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: #5b3827;
+}
+
+.finance-card-value {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #000;
+}
+
+/* ====== BUTTON ====== */
+
+.finance-btn {
+  background: #e99747;
+  border-radius: 10px;
+  padding: 12px 26px;
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+  transition: 0.15s;
+  margin-top: 4px;
+  align-self: flex-start;
+}
+
+.finance-btn:hover {
+  filter: brightness(0.93);
+}
+
+/* Make the Set New Budget button align left */
+.finance-left-btn {
+  align-self: flex-start !important;
+}
+
+/* Proper layout when editing the budget */
+.finance-budget-form {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* ====== ITEM STAT GRID ====== */
+.item-grid {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+/* Left small card */
+.item-small-card {
+  width: 250px;
+  background: #ffffff;
+  border: 2px solid #6a4b3a;
+  border-radius: 26px;
+  padding: 36px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.item-small-value {
+  font-size: 42px;
+  font-weight: 900;
+  color: #000;
+  margin-bottom: 6px;
+}
+
+.item-small-label {
+  font-size: 20px;
+  margin-top: 6px;
+  color: #6b4a39;
+}
+
+/* Chart container */
+.item-chart-card {
+  flex: 1;
+  min-width: 500px;
+  background: #ffffff;
+  border: 2px solid #6a4b3a;
+  border-radius: 26px;
+  padding: 26px 32px;
+  padding-bottom: 50px;
+}
+
+.item-chart-title {
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.item-chart-sub {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #7b5a48;
+}
+
+/* ====== RESPONSIVE ====== */
+
+@media (max-width: 900px) {
+  .finance-page {
+    padding: 24px 20px;
+  }
+
+  .finance-grid,
+  .item-grid {
+    flex-direction: column;
+  }
+
+  .item-chart-card {
+    min-width: 100%;
+  }
+}
