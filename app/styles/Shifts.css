@@ -1,5 +1,7 @@
 /* ====== PAGE BASE ====== */
 
+
+
 .shifts-page {
   min-height: 100vh;
   background: #fdfbf5;
@@ -17,18 +19,21 @@
 /* ====== HEADER ====== */
 
 .shifts-title {
-  font-family: "Playfair Display", serif;
-  font-size: 40px;
-  font-weight: 500;
-  margin-bottom: 6px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; /* adjust if needed */
+  font-weight: 600;
+  color: #4a2e19; /* same coffee brown */
+  margin-bottom: 10px;
 }
 
 .shifts-subtitle {
-  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
   font-weight: 400;
-  color: #6a4b3a;
+  color: #4a2e19;
   margin-bottom: 40px;
 }
+
 
 /* ====== TABLE WRAPPER ====== */
 

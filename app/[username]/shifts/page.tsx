@@ -132,7 +132,7 @@ function Shifts() {
         <h1 className="shifts-title">Shifts</h1>
         {userType === 'manager' ? (
           <p className="shifts-subtitle">
-            Manage user schedules, assignments, and timing.
+            Manage the overview of scheduled shifts and asssignments.
           </p>
         ) : (
           <p className="shifts-subtitle">
