@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useUser } from '../UserContext';
 import axios from 'axios';
 import Modal from '../components/Modal';
+import '@/app/styles/Shifts.css';
 
 interface Shift {
   shift_id: number;
@@ -126,144 +127,161 @@ function Shifts() {
   if (status === 'loading' || loading) return <div>Loading...</div>;
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h1>Shifts</h1>
-      {userType === 'manager' ? (
-        <>
-          <label>
-            {' '}
-            {/* Drop down to select employee to filter shifts */}
-            Filter by Employee:{' '}
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              style={{ marginLeft: '8px' }}
+    <div className="shifts-page" /*style={{ padding: '1rem' }}*/>
+      <div className="shifts-inner">
+        <h1 className="shifts-title">Shifts</h1>
+        {userType === 'manager' ? (
+          <p className="shifts-subtitle">
+            Manage user schedules, assignments, and timing.
+          </p>
+        ) : (
+          <p className="shifts-subtitle">
+            Overview of all your scheduled shifts and assignments.
+          </p>
+        )}
+        {userType === 'manager' ? (
+          <>
+            <div className="shifts-manager-controls">
+              <div className="shifts-manager-filterbox">
+                <label>
+                  {' '}
+                  {/* Drop down to select employee to filter shifts */}
+                  Filter by Employee:{' '}
+                  <select
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    style={{ marginLeft: '8px' }}
+                  >
+                    <option value=''>All Employees</option>
+                    {[...new Set(shifts.map((s) => s.name))].map((n) => (
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+              {/* button to open form for assigning shifts */}
+              <button className="shifts-assign-btn" onClick={() => setModalOpen(true)}>Assign Shifts</button>
+              {/*Modal form for assigning a new shifts */}
+              <Modal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                title='Assign New Shift'
+              >
+                <p className="assign-shift-description">Pick an employee to assign a shfit.</p>
+                <form onSubmit={assignShift} className='assign-shift-form'>          
+                    <label className="assign-label">
+                      Employee:
+                      <select
+                        value={selectedEmployee}
+                        onChange={(e) => setSelectedEmployee(Number(e.target.value))}
+                        required
+                      >
+                        <option value=''>Select an Employee</option>
+                        {employees.map((emp) => (
+                          <option key={emp.e_id} value={emp.e_id}>
+                            {emp.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+
+                  <label  className="assign-label">
+                    Date:
+                    <input
+                      type='date'
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                      required
+                    />
+                  </label>
+
+                  <label className="assign-label">
+                    Start Time:
+                    <input
+                      type='time'
+                      value={startTime}
+                      onChange={(e) => setStartTime(e.target.value)}
+                      required
+                    />
+                  </label>
+
+                  <label className="assign-label">
+                    End Time:
+                    <input
+                      type='time'
+                      value={endTime}
+                      onChange={(e) => setEndTime(e.target.value)}
+                      required
+                    />
+                  </label>
+
+                  <button type='submit' disabled={isSubmitting} className="assign-submit">
+                    {isSubmitting ? 'Assigning...' : 'Assign Shift'}
+                  </button>
+                </form>
+              </Modal>
+            </div>
+          </>
+        ) : null}
+
+        {/*Shift table */}
+        {filteredShifts.length === 0 ? (
+          <p className="shifts-empty">No shifts scheduled yet.</p>
+        ) : (
+          <div className="shifts-table-wrapper">
+            <table className="shifts-table"
+              style={{
+                borderCollapse: 'collapse',
+                width: '100%',
+                marginTop: '1rem',
+              }}
             >
-              <option value=''>All Employees</option>
-              {[...new Set(shifts.map((s) => s.name))].map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
-          </label>
-          {/* button to open form for assigning shifts */}
-          <button onClick={() => setModalOpen(true)}>Assign Shifts</button>
-          {/*Modal form for assigning a new shifts */}
-          <Modal
-            isOpen={isModalOpen}
-            onClose={() => setModalOpen(false)}
-            title='Assign New Shift'
-          >
-            <p>Pick an employee to assign a shfit.</p>
-            <form onSubmit={assignShift} className='assign-shift-form'>
-              <label>
-                Employee:
-                <select
-                  value={selectedEmployee}
-                  onChange={(e) => setSelectedEmployee(Number(e.target.value))}
-                  required
-                >
-                  <option value=''>Select an Employee</option>
-                  {employees.map((emp) => (
-                    <option key={emp.e_id} value={emp.e_id}>
-                      {emp.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label>
-                Date:
-                <input
-                  type='date'
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
-                />
-              </label>
-
-              <label>
-                Start Time:
-                <input
-                  type='time'
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                  required
-                />
-              </label>
-
-              <label>
-                End Time:
-                <input
-                  type='time'
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
-                  required
-                />
-              </label>
-
-              <button type='submit' disabled={isSubmitting}>
-                {isSubmitting ? 'Assigning...' : 'Assign Shift'}
-              </button>
-            </form>
-          </Modal>
-        </>
-      ) : null}
-
-      {/*Shift table */}
-      {filteredShifts.length === 0 ? (
-        <p>No shifts scheduled yet.</p>
-      ) : (
-        <table
-          style={{
-            borderCollapse: 'collapse',
-            width: '100%',
-            marginTop: '1rem',
-          }}
-        >
-          <thead>
-            <tr>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>Date</th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>
-                Employee ID
-              </th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>
-                Employee Name
-              </th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>
-                Start Time
-              </th>
-              <th style={{ border: '1px solid #ccc', padding: '8px' }}>
-                End Time
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredShifts.map((shift) => (
-              <tr key={shift.shift_id}>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                  {new Date(shift.date).toLocaleDateString('en-US')}
-                </td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                  {shift.e_id}
-                </td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                  {shift.name}
-                </td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                  {shift.start_time.slice(0, 5)}{' '}
-                  {parseInt(shift.start_time.slice(0, 2)) >= 12 ? 'PM' : 'AM'}
-                </td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                  {shift.end_time.slice(0, 5)}{' '}
-                  {parseInt(shift.end_time.slice(0, 2)) >= 12 ? 'PM' : 'AM'}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+              <thead>
+                <tr>
+                  <th style={{ border: '1px solid #ccc', padding: '8px' }}>Date</th>
+                  <th style={{ border: '1px solid #ccc', padding: '8px' }}>
+                    Employee ID
+                  </th>
+                  <th style={{ border: '1px solid #ccc', padding: '8px' }}>
+                    Employee Name
+                  </th>
+                  <th style={{ border: '1px solid #ccc', padding: '8px' }}>
+                    Start Time
+                  </th>
+                  <th style={{ border: '1px solid #ccc', padding: '8px' }}>
+                    End Time
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredShifts.map((shift) => (
+                  <tr key={shift.shift_id}>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}>
+                      {new Date(shift.date).toLocaleDateString('en-US')}
+                    </td>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}>
+                      {shift.e_id}
+                    </td>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}>
+                      {shift.name}
+                    </td>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}>
+                      {shift.start_time.slice(0, 5)}{' '}
+                      {parseInt(shift.start_time.slice(0, 2)) >= 12 ? 'PM' : 'AM'}
+                    </td>
+                    <td style={{ border: '1px solid #ccc', padding: '8px' }}>
+                      {shift.end_time.slice(0, 5)}{' '}
+                      {parseInt(shift.end_time.slice(0, 2)) >= 12 ? 'PM' : 'AM'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

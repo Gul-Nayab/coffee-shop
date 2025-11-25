@@ -1,0 +1,241 @@
+/* ====== PAGE BASE ====== */
+
+.shifts-page {
+  min-height: 100vh;
+  background: #fdfbf5;
+  font-family: "Work Sans", sans-serif;
+  padding: 40px 80px;
+  color: #5b3827;
+}
+
+/* Center content a bit more on large screens */
+.shifts-inner {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* ====== HEADER ====== */
+
+.shifts-title {
+  font-family: "Playfair Display", serif;
+  font-size: 40px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.shifts-subtitle {
+  font-size: 18px;
+  font-weight: 400;
+  color: #6a4b3a;
+  margin-bottom: 40px;
+}
+
+/* ====== TABLE WRAPPER ====== */
+
+.shifts-table-wrapper {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ====== TABLE ====== */
+
+.shifts-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 1250px;  
+  background: #fffdf7;
+  border: 2px solid #6a4b3a;
+  font-size: 22px;     
+}
+
+.shifts-table thead tr {
+  background: #f7f1f0;
+  border-bottom: 2px solid #6a4b3a;
+}
+
+.shifts-table th,
+.shifts-table td {
+  padding: 22px 36px;   /* ⬅ increased from 18px 32px */
+  text-align: left;
+  border-right: 1px solid #d2b9aa;
+  font-size: 20px;      /* ⬅ slightly larger */
+}
+
+/* remove right border on last column */
+.shifts-table th:last-child,
+.shifts-table td:last-child {
+  border-right: none;
+}
+
+/* header text style */
+.shifts-table th {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5b3827;
+}
+
+/* body rows */
+.shifts-table tbody tr {
+  background: #fffdf7;
+  height: 72px;  /* ⬅ taller rows */
+}
+
+.shifts-table tbody tr + tr {
+  border-top: 1px solid #e1cfc4;
+}
+
+/* first column (date) slightly wider number look */
+.shifts-table td:first-child {
+  white-space: nowrap;
+}
+
+/* highlight time a bit */
+.shifts-time-cell {
+  font-weight: 600;
+}
+
+/* ====== EMPTY STATE ====== */
+
+.shifts-empty {
+  margin-top: 24px;
+  font-size: 18px;
+  color: #7b5a48;
+}
+
+/* ====== MANAGER CONTROLS (if you reuse this css for manager view) ====== */
+
+.shifts-manager-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.shifts-manager-filterbox {
+  background: #f7f1f0;
+  border: 2px solid #6a4b3a;
+  border-radius: 10px;
+  padding: 18px 24px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.shifts-manager-filterbox label {
+  font-weight: 600;
+}
+
+.shifts-manager-filterbox select {
+  background: #fdfbf5;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 2px solid #6a4b3a;
+  font-size: 18px;
+  color: #5b3827;
+  min-width: 220px;
+  cursor: pointer;
+}
+
+.shifts-manager-filterbox select:focus {
+  outline: none;
+  border-color: #5b3827;
+}
+
+.shifts-assign-btn {
+  background: #6a4b3a;
+  padding: 16px 42px;
+  color: white;
+  font-size: 22px;
+  border-radius: 40px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.shifts-assign-btn:hover {
+  filter: brightness(1.05);
+}
+
+
+@media (max-width: 900px) {
+  .shifts-page {
+    padding: 24px 18px;
+  }
+
+  .shifts-table th,
+  .shifts-table td {
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+}
+
+/* ===== ASSIGN SHIFT MODAL STYLING ===== */
+
+.assign-shift-description {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #5b3827;
+}
+
+.assign-shift-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.assign-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.assign-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #5b3827;
+}
+
+.assign-input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #c8b2a6;
+  background: #fffdf7;
+  font-size: 15px;
+}
+
+.assign-input:focus {
+  outline: none;
+  border-color: #6a4b3a;
+}
+
+.assign-submit {
+  margin-top: 10px;
+  padding: 12px 20px;
+  background: #6a4b3a;
+  color: #fffdf7;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.assign-submit:hover {
+  filter: brightness(0.95);
+}
+
+/* ===== MANAGER FILTER SECTION ===== */
+
+.shifts-filter-label {
+  font-weight: 600;
+  margin-right: 12px;
+}
+
+.shifts-filter-select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fffdf7;
+  border: 1px solid #6a4b3a;
+  font-size: 15px;
+}
