@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useUser } from '../UserContext';
 import axios from 'axios';
+import '@/app/styles/Inventory.css';
 
 interface InventoryEntry {
   store_id: number;
@@ -75,74 +76,80 @@ function Inventory() {
 
   if (status === 'loading' || loading) return <div>Loading...</div>;
   return (
-    <div>
-      <h1> Inventory</h1>
-      <table>
-        <thead>
-          <tr>
-            <th> Ingredient Name </th>
-            <th> Amount by Unit </th>
-          </tr>
-        </thead>
-        <tbody>
-          {inventory.map((entry, index) => (
-            <tr key={`${entry.store_id}-ingred-${index}`}>
-              {/* Display ingredient and amount */}
-              <td> {entry.ingredient_name}</td>
-              <td> {entry.count}</td>
+    <div className="inventory-page">
+      <div className="inventory-inner">
+        <h1 className="inventory-title">Current Inventory</h1>
+        <p className="inventory-subtitle">View stock levels and supplies.</p>
+        <div className="inventory-table-container">
+          <table className="inventory-table">
+            <thead>
+              <tr>
+                <th> INGREDIENT NAME </th>
+                <th> AMOUNT (UNITS) </th>
+                {userType === 'manager' && <th> ACTION </th>}
+              </tr>
+            </thead>
+            <tbody>
+              {inventory.map((entry, index) => (
+                <tr key={`${entry.store_id}-ingred-${index}`}>
+                  {/* Display ingredient and amount */}
+                  <td> {entry.ingredient_name}</td>
+                  <td> {entry.count}</td>
 
-              {/* If user is manager, show inventory buttons.
-                  onclick of button, open input, on submit or cancel, 
-                  close input and show button again
-               */}
-              {userType === 'manager' && (
-                <td>
-                  {increaseIngredientInventory === entry.ingredient_name ? (
-                    <div style={{ display: 'flex', gap: '4px' }}>
-                      <input
-                        type='number'
-                        min='0'
-                        value={amountToAdd || 0}
-                        onChange={(e) =>
-                          setAmountToAdd(parseFloat(e.target.value))
-                        }
-                        style={{ width: '80px' }}
-                        placeholder='Amount'
-                      />
-                      <button
-                        onClick={() => {
-                          addInventory(
-                            entry.store_id,
-                            entry.ingredient_name,
-                            amountToAdd
-                          );
-                        }}
-                        disabled={amountToAdd === 0}
-                      >
-                        Add
-                      </button>
-                      <button
-                        onClick={() => setIncreaseIngredientInventory(null)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  ) : (
-                    //actual basic button for adding (opens input)
-                    <button
-                      onClick={() =>
-                        setIncreaseIngredientInventory(entry.ingredient_name)
-                      }
-                    >
-                      Add Inventory
-                    </button>
+                  {/* If user is manager, show inventory buttons.
+                      onclick of button, open input, on submit or cancel, 
+                      close input and show button again
+                  */}
+                  {userType === 'manager' && (
+                    <td>
+                      {increaseIngredientInventory === entry.ingredient_name ? (
+                        <div className="inventory-edit-form" /*style={{ display: 'flex', gap: '4px' }}*/>
+                          <input
+                            type='number'
+                            min='0'
+                            value={amountToAdd || 0}
+                            onChange={(e) =>
+                              setAmountToAdd(parseFloat(e.target.value))
+                            }
+                            style={{ width: '80px' }}
+                            placeholder='Amount'
+                          />
+                          <button className="inventory-btn"
+                            onClick={() => {
+                              addInventory(
+                                entry.store_id,
+                                entry.ingredient_name,
+                                amountToAdd
+                              );
+                            }}
+                            disabled={amountToAdd === 0}
+                          >
+                            Add
+                          </button>
+                          <button className="inventory-btn-cancel"
+                            onClick={() => setIncreaseIngredientInventory(null)}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        //actual basic button for adding (opens input)
+                        <button className="inventory-btn"
+                          onClick={() =>
+                            setIncreaseIngredientInventory(entry.ingredient_name)
+                          }
+                        >
+                          Add Inventory
+                        </button>
+                      )}
+                    </td>
                   )}
-                </td>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

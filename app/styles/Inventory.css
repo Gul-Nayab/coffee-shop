@@ -1,0 +1,154 @@
+/* ===========================
+   PAGE BASE
+=========================== */
+.inventory-page {
+  min-height: 100vh;
+  background: #fdfbf5;
+  padding: 40px 80px;
+  font-family: "Work Sans", sans-serif;
+  color: #5b3827;
+}
+
+.inventory-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ===========================
+   TITLE
+=========================== */
+.inventory-title {
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
+  margin-bottom: 6px;
+  color: #5b3827;
+}
+
+.inventory-subtitle {
+  font-size: 18px;
+  margin-bottom: 28px;
+  color: #6f4e37;
+}
+
+/* ===========================
+   TABLE WRAPPER
+=========================== */
+.inventory-table-container {
+  border: 3px solid #6a4b3a;
+  border-radius: 28px;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ===========================
+   TABLE
+=========================== */
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 20px;
+  color: #5b3827;
+}
+
+/* Header Row */
+.inventory-table thead {
+  background: #f4edeb;
+}
+
+.inventory-table th {
+  font-weight: 700;
+  padding: 22px 24px;
+  text-align: left;
+  border-bottom: 2px solid #d3c5be;
+  font-size: 18px;
+}
+
+/* Body Rows */
+.inventory-table td {
+  padding: 22px 24px;
+  font-size: 20px;
+  border-bottom: 1px solid #e8dfdb;
+}
+
+/* Hover row highlight */
+.inventory-table tbody tr:hover {
+  background: #fff7ee;
+}
+
+/* ===========================
+   MANAGER ACTION BUTTONS
+=========================== */
+
+/* "Add" Button — Green pill */
+.inventory-btn {
+  background: #52b76f;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 18px;
+  color: white;
+  transition: 0.15s;
+}
+
+.inventory-btn:hover {
+  filter: brightness(0.92);
+}
+
+/* "Cancel" Button — Light grey pill */
+.inventory-btn-cancel {
+  background: #e7e9ec;
+  padding: 10px 26px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #4b4b4b;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  transition: 0.15s;
+  margin-left: 10px;
+}
+
+.inventory-btn-cancel:hover {
+  filter: brightness(0.94);
+}
+
+/* ===========================
+   EDIT MODE FORM
+=========================== */
+.inventory-edit-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Input Box */
+.inventory-edit-form input {
+  width: 90px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 2px solid #c2a99a;
+  font-size: 16px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 900px) {
+  .inventory-page {
+    padding: 20px;
+  }
+
+  .inventory-table td,
+  .inventory-table th {
+    font-size: 16px;
+    padding: 16px 10px;
+  }
+
+  .inventory-btn,
+  .inventory-btn-cancel {
+    font-size: 14px;
+    padding: 8px 18px;
+  }
+}
