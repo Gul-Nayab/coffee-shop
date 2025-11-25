@@ -55,26 +55,92 @@ export async function PATCH(
   try {
     await connection.beginTransaction();
 
-    const [updateResult] = await connection.query(
+    //get order details
+    const [orderRows]: any = await connection.query(
+      `SELECT item_name, quantity 
+       FROM orders 
+       WHERE pk_order_id = ? AND store_id = ?`,
+      [pk_order_id, store_id]
+    );
+
+    if (orderRows.length === 0) {
+      throw new Error('Order not found');
+    }
+
+    const itemName = orderRows[0].item_name;
+    const quantity = orderRows[0].quantity ?? 1;
+
+    //get ingredients for this item
+    const [ingredients]: any = await connection.query(
+      `SELECT ingredient_name
+       FROM ingredient
+       WHERE item_name = ?`,
+      [itemName]
+    );
+
+    if (ingredients.length === 0) {
+      throw new Error(`No ingredients found for item ${itemName}`);
+    }
+
+    // inventory check
+    for (const ingredient of ingredients) {
+      const [inv]: any = await connection.query(
+        `SELECT count
+         FROM inventory
+         WHERE store_id = ? AND ingredient_name = ?`,
+        [store_id, ingredient.ingredient_name]
+      );
+
+      if (inv.length === 0) {
+        throw new Error(
+          `Missing ingredient in inventory: ${ingredient.ingredient_name}`
+        );
+      }
+
+      const available = inv[0].count;
+      const required = 0.01 * quantity;
+
+      if (available < required) {
+        throw new Error(
+          `Not enough ${
+            ingredient.ingredient_name
+          }. Required: ${required.toFixed(4)}, Available: ${available}`
+        );
+      }
+    }
+
+    //deduct from inventory
+    for (const ingredient of ingredients) {
+      await connection.query(
+        `UPDATE inventory
+         SET count = count - (0.01 * ?)
+         WHERE store_id = ? AND ingredient_name = ?`,
+        [quantity, store_id, ingredient.ingredient_name]
+      );
+    }
+
+    //update order status
+    const [updateOrder]: any = await connection.query(
       `UPDATE orders
-       SET completed=true
+       SET completed = true
        WHERE store_id = ? AND pk_order_id = ?`,
       [store_id, pk_order_id]
     );
 
-    if (updateResult.affectedRows === 0) {
-      throw new Error('Order not found in inventory');
+    if (updateOrder.affectedRows === 0) {
+      throw new Error('Order update failed');
     }
+
     await connection.commit();
 
     return NextResponse.json({
-      message: 'Order Status updated successfully',
+      message: 'Order completed & inventory updated successfully',
     });
   } catch (err: any) {
     await connection.rollback();
     console.error('Transaction failed:', err);
     return NextResponse.json(
-      { error: err.message || 'Failed to updated inventory' },
+      { error: err.message || 'Failed to update inventory' },
       { status: 500 }
     );
   } finally {
