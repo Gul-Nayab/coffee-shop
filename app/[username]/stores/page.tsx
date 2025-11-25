@@ -1,5 +1,7 @@
 'use client';
 
+import '../../styles/Stores.css';  
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
