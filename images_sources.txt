@@ -1,0 +1,30 @@
+Greeting Page - 
+Background Image: https://www.sanjose.org/sites/default/files/2023-07/resized/san_jose_3_mammoth_native-41_1600_0.jpg
+
+Create Account/Sign In - 
+Coffee Cup Image: https://www.pexels.com/photo/close-up-photography-of-cup-of-coffee-851555/
+
+Home Page - 
+Customer
+"Find Nearby Shops" Home Account Screen: https://images.pexels.com/photos/887723/pexels-photo-887723.jpeg
+“Your orders” Home Account Screen: https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg
+
+Manager
+Staff Shifts: https://images.pexels.com/photos/3801422/pexels-photo-3801422.jpeg
+Check Inventory: https://images.pexels.com/photos/2199190/pexels-photo-2199190.jpeg
+See Earnings Report: https://images.pexels.com/photos/4475524/pexels-photo-4475524.jpeg
+
+Employee
+View Shifts: https://images.pexels.com/photos/3801422/pexels-photo-3801422.jpeg
+View Inventory: https://images.pexels.com/photos/2199190/pexels-photo-2199190.jpeg
+View Upcoming Orders: https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg
+
+Coffee Shop Exterior Photos -  
+Vegan Villa: https://images.pexels.com/photos/2574474/pexels-photo-2574474.jpeg
+Philz My Mug Makes Me Fabulous: https://images.pexels.com/photos/33728670/pexels-photo-33728670.jpeg
+Voyager: https://images.pexels.com/photos/5389999/pexels-photo-5389999.jpeg
+Academic: https://images.pexels.com/photos/17093261/pexels-photo-17093261.jpeg
+Starbucks: https://images.pexels.com/photos/34803316/pexels-photo-34803316.jpeg
+
+Order History - 
+Create an Order: https://images.pexels.com/photos/4921403/pexels-photo-4921403.jpeg
