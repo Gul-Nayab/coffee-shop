@@ -1,0 +1,326 @@
+/* ---------------------------- */
+/* PAGE WRAPPER + BACKGROUND */
+/* ---------------------------- */
+
+.specific-store-page {
+  min-height: calc(100vh - 80px);
+  background: linear-gradient(
+    to bottom,
+    #f7efe5 0%,
+    #fcf8f2 30%,
+    #fdf5ea 100%
+  );
+  padding: 3rem 4vw 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
+/* Loading text */
+.specific-store-loading {
+  padding: 4rem 2rem;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+/* ---------------------------- */
+/* INFORMATION CARD */
+/* ---------------------------- */
+
+.specific-store-card {
+  width: 100%;
+  max-width: 1150px;
+  background: #fffdf8;
+  border-radius: 24px;
+  padding: 2.6rem 3rem 2.2rem;
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.07);
+  box-sizing: border-box;
+}
+
+.specific-store-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.specific-store-name {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  font-size: 2.8rem;
+  color: #3b2716;
+  letter-spacing: 0.03em;
+}
+
+/* DISTANCE PILL */
+.specific-store-distance {
+  background-color: #e8d1c6;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem; /* increased spacing */
+  padding: 0.7rem 1.8rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #3b2716;
+  white-space: nowrap;
+}
+
+.distance-icon {
+  display: inline-flex;
+  align-items: center;
+  color: #5a3f2d;
+  opacity: 0.9;
+}
+
+/* ---------------------------- */
+/* LOCATION + HOURS ROW */
+/* ---------------------------- */
+
+.specific-store-info-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.specific-store-info-block {
+  min-width: 250px;
+}
+
+.specific-store-label {
+  margin: 0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #8a6a4a;
+}
+
+.specific-store-value {
+  margin-top: 0.2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #3b2716;
+  display: flex;
+  align-items: center;
+}
+
+/* Tabler icons */
+.specific-store-icon {
+  margin-right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ---------------------------- */
+/* AMENITIES */
+/* ---------------------------- */
+
+.specific-store-amenities {
+  margin-top: 1.8rem;
+}
+
+.specific-store-amenities-title {
+  font-size: 1rem;
+  margin-bottom: 0.9rem;
+  color: #3b2716;
+}
+
+.specific-store-amenities-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.amenity-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.5rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.amenity-chip-icon {
+  margin-right: 0.45rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Green / Red states */
+.amenity-chip-green {
+  background-color: #d9f2dc;
+  color: #245d33;
+}
+
+.amenity-chip-red {
+  background-color: #f7d2d9;
+  color: #7c1f32;
+}
+
+/* ---------------------------- */
+/* STORE PHOTO */
+/* ---------------------------- */
+
+.specific-store-photo-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto -1rem; 
+  border-top: 4px solid #f0e0cf;
+  border-bottom: 4px solid #f0e0cf;
+  overflow: hidden;
+}
+
+
+.specific-store-photo {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+}
+
+/* ---------------------------- */
+/* MENU SECTION */
+/* ---------------------------- */
+
+.specific-store-menu-section {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 2rem;
+}
+
+.specific-store-menu-title {
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.4rem;
+  color: #3b2716;
+  margin-bottom: 2rem;
+}
+
+/* ---- MENU from Menu.tsx ---- */
+.specific-store-menu-section .menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.8rem;
+  padding: 0.5rem 0 1rem;
+}
+
+.specific-store-menu-section .menu-item {
+  background-color: #fffdf7;
+  border: 2px dashed #d88b39;
+  border-radius: 18px;
+  padding: 1.4rem 1.2rem;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.specific-store-menu-section .menu-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+/* Tabler icons inside each card */
+.specific-store-menu-section .menu-item svg {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 0.6rem;
+  stroke-width: 1.9;
+  color: #3b2716;
+}
+
+.specific-store-menu-section .menu-item h4 {
+  margin: 0 0 0.35rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #3b2716;
+}
+
+.specific-store-menu-section .menu-item p {
+  margin: 0.1rem 0;
+  font-size: 0.95rem;
+  color: #5e4a36;
+}
+
+.specific-store-menu-section .menu-item p:last-of-type {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  color: #3b2716;
+}
+
+/* ---------------------------- */
+/* RESPONSIVE */
+/* ---------------------------- */
+
+@media (max-width: 850px) {
+  .specific-store-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .specific-store-distance {
+    align-self: flex-start;
+  }
+
+  .specific-store-name {
+    font-size: 2.2rem;
+  }
+
+  .specific-store-photo {
+    height: 220px;
+  }
+}
+
+@media (max-width: 500px) {
+  .specific-store-page {
+    padding: 2rem 1.4rem 3rem;
+  }
+
+  .specific-store-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .specific-store-name {
+    font-size: 1.9rem;
+  }
+
+  .specific-store-photo {
+    height: 190px;
+  }
+
+  .specific-store-menu-section .menu-container {
+    grid-template-columns: 1fr;
+  }
+}
+/* ---- GLOBAL BROWN TEXT OVERRIDES ---- */
+
+.specific-store-name,
+.specific-store-value,
+.specific-store-label,
+.specific-store-amenities-title,
+.specific-store-menu-title,
+.specific-store-menu-section .menu-item h4,
+.specific-store-menu-section .menu-item p,
+.specific-store-distance,
+.menu-item-price,
+.menu-item-add {
+  color: #573425 !important;
+}
+
+/* Tabler icons also brown */
+.specific-store-icon,
+.amenity-chip-icon,
+.distance-icon,
+.specific-store-menu-section .menu-item svg {
+  color: #573425 !important;
+  stroke: #573425 !important;
+}
