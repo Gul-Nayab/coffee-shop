@@ -35,6 +35,12 @@ function Orders() {
   const [orders, setOrders] = useState<CustomerOrder[]>([]);
   const [baristaOrders, setBaristaOrders] = useState<BaristaOrder[]>([]);
 
+  const [inventory, setInventory] = useState<any[]>([]);
+
+  const [ingredientsMap, setIngredientsMap] = useState<
+    Record<string, string[]>
+  >({});
+
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/auth/login');
   }, [status, router]);
@@ -70,6 +76,21 @@ function Orders() {
       getIncompleteOrders();
     }
   }, [userType]);
+  useEffect(() => {
+    if (userType === 'barista') {
+      axios
+        .get(`/api/coffee-shop/stores/${user?.store_id}/ingredients`)
+        .then((res) => {
+          const map: Record<string, string[]> = {};
+          res.data.forEach((row: any) => {
+            if (!map[row.item_name]) map[row.item_name] = [];
+            map[row.item_name].push(row.ingredient_name);
+          });
+          setIngredientsMap(map);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [userType]);
 
   async function handleOrderComplete(pk_order_id: number) {
     console.log(pk_order_id, 'completed');
@@ -88,6 +109,23 @@ function Orders() {
       console.error('Failed to mark order complete:', error);
       alert('Error updating order status.');
     }
+  }
+
+  function canCompleteOrder(order: BaristaOrder): boolean {
+    const requiredIngredients = ingredientsMap[order.item_name];
+    if (!requiredIngredients) return false;
+
+    for (const ingredient of requiredIngredients) {
+      const inv = inventory.find((i) => i.ingredient_name === ingredient);
+      if (!inv) return false;
+
+      const available = inv.count;
+      const required = 0.01 * order.quantity;
+
+      if (available < required) return false;
+    }
+
+    return true;
   }
 
   if (status === 'loading' || loading) return <div>Loading...</div>;
@@ -199,9 +237,12 @@ function Orders() {
                 {!order.completed && (
                   <button
                     className='orders-create-btn'
+                    disabled={!canCompleteOrder(order)}
                     onClick={() => handleOrderComplete(order.pk_order_id)}
                   >
-                    Set As Completed
+                    {canCompleteOrder(order)
+                      ? 'Set As Completed'
+                      : 'Insufficient Inventory'}
                   </button>
                 )}
               </div>
