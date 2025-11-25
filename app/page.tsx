@@ -1,3 +1,4 @@
+/*SJSU CMPE 138 FALL 2025 TEAM 2*/
 'use client';
 
 import Image from 'next/image';
