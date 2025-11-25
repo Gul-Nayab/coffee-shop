@@ -61,7 +61,7 @@ function CoffeeShops() {
 
   return (
     <div>
-      <h1>Browse All DSTJ Coffee Shops</h1>
+      <h1>Browse All DTSJ Coffee Shops</h1>
       <div>
         {' '}
         {/*Container for all the store cards */}
