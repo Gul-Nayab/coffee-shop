@@ -7,6 +7,7 @@ import { useUser } from '../UserContext';
 import Menu from '../components/Menu';
 import Modal from '../components/Modal';
 import axios from 'axios';
+import { IconMapPin } from '@tabler/icons-react';
 import '@/app/styles/Cart.css';
 
 interface MenuItem {
@@ -31,10 +32,11 @@ export default function CartPage() {
   const [storeId, setStoreId] = useState<number | null>(null);
   const [stores, setStores] = useState<Store[]>([]);
   const [isOrdering, setIsOrdering] = useState(false);
-  const [confirmAction, setConfirmAction] = useState<
-    'cancel' | 'change' | null
-  >(null);
+  const [confirmAction, setConfirmAction] = useState<'cancel' | 'change' | null>(
+    null
+  );
 
+  // Load cart from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem('cart');
     if (stored) {
@@ -48,15 +50,18 @@ export default function CartPage() {
     }
   }, []);
 
+  // Persist cart to localStorage
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
+  // Redirect unauthenticated / manager users
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/auth/login');
     if (userType === 'manager') router.push('/auth/login');
   }, [status, router, userType]);
 
+  // Fetch stores if cart is empty
   useEffect(() => {
     if (cart.length === 0) {
       axios
@@ -67,7 +72,7 @@ export default function CartPage() {
   }, [cart.length]);
 
   function handleRemove(itemName: string) {
-    setCart(cart.filter((item) => item.item_name !== itemName));
+    setCart((prev) => prev.filter((item) => item.item_name !== itemName));
   }
 
   function handleAddItem(newItem: MenuItem) {
@@ -97,13 +102,14 @@ export default function CartPage() {
   }
 
   function confirmActionHandler() {
-    if (confirmAction) {
-      localStorage.removeItem('cart');
-      setCart([]);
-      setStoreId(null);
-      setIsOrdering(false);
-      setConfirmAction(null);
-    }
+    if (!confirmAction) return;
+
+    // Clear cart + state, go back to initial view
+    localStorage.removeItem('cart');
+    setCart([]);
+    setStoreId(null);
+    setIsOrdering(false);
+    setConfirmAction(null);
   }
 
   const discountRate = userType === 'student' ? 0.9 : 1;
@@ -115,7 +121,6 @@ export default function CartPage() {
 
   async function handleSubmitOrder() {
     try {
-      console.log(cart);
       await axios.post(`/api/coffee-shop/users/${username}/orders`, {
         items: cart,
         type: userType,
@@ -133,42 +138,64 @@ export default function CartPage() {
 
   if (status === 'loading' || loading) return <div>Loading...</div>;
 
+  const isInitialView = !isOrdering && cart.length === 0;
+
   return (
     <div className='cart-page'>
       <h1 className='cart-title'>Your Cart</h1>
+      <p className='cart-subtitle'>
+        Ready to fuel your day? Select your preferred store to begin.
+      </p>
 
-      <div className='cart-layout'>
-        {/* LEFT SIDE */}
-        <div className='cart-left'>
-          {!isOrdering && cart.length === 0 ? (
-            <div className='store-select'>
-              <h3>Select a Store</h3>
-              <select
-                value={storeId ?? ''}
-                onChange={(e) => setStoreId(Number(e.target.value))}
-              >
-                <option value=''>-- Choose a store --</option>
-                {stores.map((s) => (
-                  <option key={s.store_id} value={s.store_id}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-              <button
-                disabled={!storeId}
-                onClick={() => setIsOrdering(true)}
-                className='begin-btn'
-              >
-                Begin Order
-              </button>
+      {isInitialView ? (
+        // ==========================
+        // INITIAL VIEW – SELECT STORE
+        // ==========================
+        <div className='store-select-card'>
+          <div className='store-select-header'>
+            <div className='store-select-icon'>
+              <IconMapPin size={26} stroke={1.8} />
             </div>
-          ) : (
-            <div>
-              {cart.length === 0 ? (
-                <p className='empty-cart-message'>
-                  Your cart is empty. Click items from the menu to add them.
-                </p>
-              ) : (
+            <h3>Select a Store</h3>
+          </div>
+
+          <label className='store-select-label' htmlFor='cart-store-select'>
+            Pickup Location
+          </label>
+          <select
+            id='cart-store-select'
+            value={storeId ?? ''}
+            onChange={(e) => setStoreId(Number(e.target.value))}
+          >
+            <option value=''>-- Choose a store --</option>
+            {stores.map((s) => (
+              <option key={s.store_id} value={s.store_id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+
+          <button
+            disabled={!storeId}
+            onClick={() => setIsOrdering(true)}
+            className='begin-order-btn'
+          >
+            Begin Order
+          </button>
+        </div>
+      ) : (
+        // ==========================
+        // CART + MENU VIEW
+        // ==========================
+        <div className='cart-layout'>
+          {/* LEFT SIDE – CART */}
+          <div className='cart-left'>
+            {cart.length === 0 ? (
+              <p className='empty-cart-message'>
+                Your cart is empty. Click items from the menu to add them.
+              </p>
+            ) : (
+              <>
                 <table className='cart-table'>
                   <thead>
                     <tr>
@@ -242,43 +269,44 @@ export default function CartPage() {
                     })}
                   </tbody>
                 </table>
-              )}
 
-              <div className='cart-summary'>
-                <strong>Total: </strong>${total.toFixed(2)}
-                {userType === 'student' && (
-                  <span className='discount-text'>
-                    {' '}
-                    (10% student discount applied)
-                  </span>
-                )}
-              </div>
+                <div className='cart-summary'>
+                  <strong>Total: </strong>${total.toFixed(2)}
+                  {userType === 'student' && (
+                    <span className='discount-text'>
+                      {' '}
+                      (10% student discount applied)
+                    </span>
+                  )}
+                </div>
 
-              <div className='cart-actions'>
-                <button onClick={() => setIsOrdering(true)}> Open Menu</button>
-                <button onClick={handleSubmitOrder}>Submit Order</button>
-                <button onClick={handleChangeStore}>Change Store</button>
-                <button onClick={handleCancelOrder}>Cancel Order</button>
+                <div className='cart-actions'>
+                  <button onClick={() => setIsOrdering(true)}>Open Menu</button>
+                  <button onClick={handleSubmitOrder}>Submit Order</button>
+                  <button onClick={handleChangeStore}>Change Store</button>
+                  <button onClick={handleCancelOrder}>Cancel Order</button>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* RIGHT SIDE – MENU */}
+          {isOrdering && storeId && (
+            <div className='menu-panel'>
+              <div className='menu-header'>
+                <h3>Menu</h3>
+                <button
+                  className='close-menu'
+                  onClick={() => setIsOrdering(false)}
+                >
+                  ✕
+                </button>
               </div>
+              <Menu store_id={storeId} onItemClick={handleAddItem} />
             </div>
           )}
         </div>
-
-        {isOrdering && storeId && (
-          <div className='menu-panel'>
-            <div className='menu-header'>
-              <h3>Menu</h3>
-              <button
-                className='close-menu'
-                onClick={() => setIsOrdering(false)}
-              >
-                ✕
-              </button>
-            </div>
-            <Menu store_id={storeId} onItemClick={handleAddItem} />
-          </div>
-        )}
-      </div>
+      )}
 
       <Modal
         isOpen={!!confirmAction}
