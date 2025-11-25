@@ -1,6 +1,6 @@
 'use client';
 
-import '../../styles/Stores.css';  
+import '../../styles/Stores.css';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -9,15 +9,15 @@ import { useUser } from '../UserContext';
 import axios from 'axios';
 
 interface CoffeeShop {
-  Store_id: number;
-  Name: string;
-  Address: string;
-  Outlets: boolean;
-  Distance_from_sjsu: number;
-  Seating: boolean;
-  Open_time: string;
-  Close_time: string;
-  Vegan: boolean;
+  store_id: number;
+  name: string;
+  address: string;
+  outlets: boolean;
+  distance_from_sjsu: number;
+  seating: boolean;
+  open_time: string;
+  close_time: string;
+  vegan: boolean;
 }
 
 function CoffeeShops() {
@@ -67,14 +67,14 @@ function CoffeeShops() {
         {(userType === 'customer' || userType === 'student') &&
           stores.map((store) => (
             <div
-              key={store.Store_id}
-              onClick={() => handleCardClick(store.Store_id)}
+              key={store.store_id}
+              onClick={() => handleCardClick(store.store_id)}
             >
               {/*The store card */}
-              <h3>Store #{store.Name}</h3>
-              <p>{store.Address}</p>
+              <h3>Store #{store.name}</h3>
+              <p>{store.address}</p>
               <p>
-                {store.Open_time}AM - {store.Close_time}PM
+                {store.open_time}AM - {store.close_time}PM
               </p>
             </div>
           ))}
