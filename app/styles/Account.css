@@ -6,18 +6,19 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start; 
-  padding-left: 150px;     
-
+  padding-left: 150px;
   padding-top: 40px;
   color: #573425;
 }
 
+/* -------------------- TEXT HEADERS -------------------- */
+
 .account-greeting {
-  font-size: 34px;              
-  font-weight: 700;             
+  font-size: 34px;
+  font-weight: 700;
   color: #000000;
-  margin-top: 50px;               
-  letter-spacing: 0.3px;       
+  margin-top: 50px;
+  letter-spacing: 0.3px;
 }
 
 .account-greeting i {
@@ -35,14 +36,18 @@
   margin-top: -4px;
 }
 
+/* -------------------- INFO BOX -------------------- */
+
 .account-info-box {
   background: #fffdf5;
   border: 3px solid #1d1d1d;
   border-radius: 30px;
 
   padding: 35px 45px;
-  width: 50%;             
-  max-width: 600px;
+
+  /* UPDATED: narrower so it doesn't overlap logo */
+  width: 43%;
+  max-width: 520px;
 
   font-size: 22px;
   color: #1d1d1d;
@@ -58,24 +63,32 @@
   font-weight: 700;
 }
 
+/* -------------------- BIG LOGO -------------------- */
+
 .account-logo-big {
   position: absolute;
-  right: 0;          
-  top: 130px;
 
-  width: 45vw;        
-  height: auto;       
+  /* UPDATED positioning */
+  right: 60px;
+  top: 150px;
+  width: 40vw;
 
+  height: auto;
   opacity: 0.9;
   pointer-events: none;
   object-fit: contain;
 }
 
+/* -------------------- BUTTON ROW -------------------- */
+
 .account-buttons {
   display: flex;
   gap: 22px;
-  margin-top: 10px;
-  max-width: 850;
+
+  /* UPDATED: push buttons down */
+  margin-top: 50px;
+
+  max-width: 850px;
 }
 
 .account-btn {
@@ -97,6 +110,8 @@
 
   transition: transform 0.15s ease, filter 0.15s ease;
 }
+
+/* -------------------- BUTTON COLORS -------------------- */
 
 .btn-changePassword {
   background: linear-gradient(to bottom, #e38933, #c55f00);
@@ -122,8 +137,14 @@
   transform: translateY(1px);
 }
 
+/* -------------------- RESPONSIVE -------------------- */
+
 @media (max-width: 900px) {
   .account-logo-big {
     display: none;
+  }
+
+  .account-info-box {
+    width: 80%;
   }
 }
