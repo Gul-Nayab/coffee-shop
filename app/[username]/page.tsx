@@ -25,12 +25,20 @@ function Dashboard() {
             Welcome back,
           </div>
           <Link href={`/${username}/account`} className="dashboard-header-name">{user?.name}</Link>
-          <div className="dashboard-header-subtext">
+          {userType === 'customer' || userType === 'student' ? (
+          <>
+            <div className="dashboard-header-subtext">
               Ready for your daily brew? Check out nearby spots or
-          </div>
-          <div className="dashboard-header-subtext">
+            </div>
+            <div className="dashboard-header-subtext">
               revisit your favorites.
-          </div>
+            </div>
+          </>
+          ) : (
+            <div className="dashboard-header-subtext">
+              Here's what is happening at the coffeeshop.
+            </div>
+          )}
         </div>
 
         <div className="dashboard-actions-grid">
@@ -41,7 +49,7 @@ function Dashboard() {
                 className="dashboard-action-card"
                 onClick={() => router.push(`/${username}/stores`)}
               >
-                <img src="/images/viewStores.jpeg" alt="Nearby Stores" />
+                <img src="/images/viewStores.jpeg" alt="Find Nearby Stores" />
                 <div className="dashboard-card-text">Find Nearby Stores</div>
                 <div className="dashboard-card-button">View Nearby Stores</div>
               </div>
@@ -58,52 +66,38 @@ function Dashboard() {
           ) : (
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <div
-                style={{
-                  border: '1px solid black',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  width: 'fit-content',
-                  padding: '1rem',
-                }}
+                className="dashboard-action-card"
                 onClick={() => router.push(`/${username}/shifts`)}
               >
-                View Shifts
+                <img src="/images/viewShifts.jpeg" alt="View Shifts" />
+                <div className="dashboard-card-text">View Shifts</div>
+                <div className="dashboard-card-button">View Your Shifts</div>
               </div>
               <div
-                style={{
-                  border: '1px solid black',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  width: 'fit-content',
-                  padding: '1rem',
-                }}
+                className="dashboard-action-card"
                 onClick={() => router.push(`/${username}/inventory`)}
               >
-                View Inventory
+                <img src="/images/viewInventory.jpeg" alt="View Inventory" />
+                <div className="dashboard-card-text">View Inventory</div>
+                <div className="dashboard-card-button">View Your Inventory</div>
               </div>
               {userType === 'manager' ? (
                 <div
-                  style={{
-                    border: '1px solid black',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    minWidth: 'fit-content',
-                  }}
+                  className="dashboard-action-card"
                   onClick={() => router.push(`/${username}/finances`)}
                 >
-                  View Earnings
+                  <img src="/images/viewEarning.jpeg" alt="View Earnings" />
+                  <div className="dashboard-card-text">View Earnings</div>
+                  <div className="dashboard-card-button">View Your Earning</div>
                 </div>
               ) : (
                 <div
-                  style={{
-                    border: '1px solid black',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    minWidth: 'fit-content',
-                  }}
+                  className="dashboard-action-card"
                   onClick={() => router.push(`/${username}/orders`)}
                 >
-                  View Incoming Orders
+                  <img src="/images/viewStores.jpeg" alt="View Upcoming Orders" />
+                  <div className="dashboard-card-text">View Upcoming Orders</div>
+                  <div className="dashboard-card-button">View Orders</div>
                 </div>
               )}
             </div>
