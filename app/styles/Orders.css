@@ -1,85 +1,277 @@
+/* ========== Page Layout ========== */
+
 .orders-page {
-  padding: 1rem;
-  background-color: #fffdf5;
-  min-height: 100vh;
-  font-family: 'Work Sans', sans-serif;
+  min-height: calc(100vh - 80px);
+  padding: 40px 60px 80px;
+  background-color: #fffaf0; /* light cream */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .orders-title {
-  font-size: 28px;
-  color: #573425;
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #5b3213;
+  margin: 0 0 8px;
   text-align: center;
-  margin-bottom: 1rem;
 }
 
+.orders-subtitle {
+  margin: 0 0 24px;
+  font-size: 0.98rem;
+  color: #7a6a5c;
+  text-align: center;
+}
+
+/* Primary CTA button ("Create a New Order") */
 .orders-create-btn {
-  display: block;
-  margin: 0 auto 1.5rem auto;
-  background-color: #573425;
-  color: white;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  padding: 10px 28px;
+  border-radius: 999px;
   border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+  outline: none;
   cursor: pointer;
+  background-color: #7b3f16;
+  color: #fff;
+  font-size: 0.95rem;
   font-weight: 600;
-  transition: filter 0.2s;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  transition: transform 0.1s ease, box-shadow 0.1s ease,
+    background-color 0.15s ease;
 }
 
-
-.orders-create-btn:hover {
-  filter: brightness(0.95);
+.orders-create-btn:hover:not(:disabled) {
+  background-color: #8b4b1e;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
-.orders-create-btn:disabled{
-  background-color: #a29991;
+
+.orders-create-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+}
+
+.orders-create-btn:disabled {
+  opacity: 0.65;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
+/* Container that holds the cards */
 .orders-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 18px;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 24px;
   justify-content: center;
+  align-items: stretch;
 }
 
+/* Message for empty barista list */
+.orders-empty {
+  font-size: 1rem;
+  color: #6b5c4b;
+}
+
+/* ========== Order Card – Shared Base Styles ========== */
+
 .order-card {
-  border: 1px solid #573425;
-  border-radius: 10px;
-  padding: 12px 16px;
-  width: 280px;
-  background-color: #fffef8;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  max-width: 380px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+/* ========== Customer Order Card (image style) ========== */
+
+.order-card__image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+}
+
+/* This div gets its background-image via store-* classes below */
+.order-card__image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Badges on top of the image (order number + status) */
+.order-card__badge {
+  position: absolute;
+  top: 14px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #3b2e22;
+}
+
+.order-card__badge--id {
+  left: 16px;
+}
+
+.order-card__badge--status {
+  right: 16px;
+  background-color: #38a169; /* green pill */
+  color: #ffffff;
+}
+
+/* Body of the card */
+.order-card__body {
+  padding: 18px 20px 18px;
+}
+
+.order-card__store {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2e241c;
+}
+
+/* Items list */
+.order-card__items-list {
+  list-style: none;
+  padding: 10px 0 6px;
+  margin: 0;
+  border-top: 1px solid #f0e4d8;
+  border-bottom: 1px solid #f0e4d8;
+}
+
+.order-card__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  padding: 6px 0;
+  color: #4b3b2b;
+}
+
+.order-card__item-main {
+  margin-right: 12px;
+}
+
+.order-card__item-price {
+  font-weight: 500;
+}
+
+/* Footer with total */
+.order-card__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.order-card__footer-label {
+  font-size: 0.9rem;
+  color: #7a6a5c;
+}
+
+.order-card__total {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2e241c;
+}
+
+/* ========== Barista Card Variant ========== */
+
+.order-card--barista {
+  padding: 18px 20px 20px;
 }
 
 .order-id {
-  font-size: 18px;
-  font-weight: 700;
-  color: #573425;
-  margin-bottom: 6px;
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2e241c;
 }
 
-.order-store {
-  font-size: 15px;
-  color: #4b3b2e;
-  margin-bottom: 8px;
+.order-barista-line {
+  margin: 2px 0;
+  font-size: 0.92rem;
+  color: #4b3b2b;
 }
 
-.order-items-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 6px 0;
+/* For the complete button on barista cards, reuse base + tweak margin */
+.orders-complete-btn {
+  margin-top: 12px;
 }
 
-.order-item {
-  font-size: 14px;
-  color: #333;
-  padding: 3px 0;
-  border-bottom: 1px solid #e4dcd4;
+/* ========== Background image per STORE (using store-* classes) ========== */
+
+.order-card.store-very-vegan-villa .order-card__image {
+  background-image: url('/images/vegan.jpeg');
 }
 
-.order-total {
-  margin-top: 10px;
-  font-weight: 700;
-  color: #573425;
-  font-size: 15px;
-  text-align: right;
+
+.order-card.store-philz-coffee .order-card__image {
+  background-image: url('/images/philz.jpeg');
+}
+
+.order-card.store-starbucks .order-card__image {
+  background-image: url('/images/starbucks.jpeg');
+}
+
+/* Very Vegan Villa (already working) */
+.order-card.store-very-vegan-villa .order-card__image {
+  background-image: url('/images/vegan.jpeg');
+}
+
+/* Academic */
+.order-card.store-academic .order-card__image {
+  background-image: url('/images/academic.jpeg');
+}
+
+/* Voyager */
+.order-card.store-voyager .order-card__image {
+  background-image: url('/images/voyager.jpeg');
+}
+
+
+/* Default fallback if a store has no specific image mapping */
+.order-card .order-card__image {
+  background-color: #f3e8dd;
+}
+
+/* ========== Responsive ========== */
+
+@media (max-width: 900px) {
+  .orders-page {
+    padding: 32px 18px 50px;
+  }
+
+  .order-card {
+    max-width: 100%;
+  }
+
+  .orders-container {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .orders-title {
+    font-size: 1.9rem;
+  }
+
+  .orders-subtitle {
+    font-size: 0.9rem;
+  }
 }

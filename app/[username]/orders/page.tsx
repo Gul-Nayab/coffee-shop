@@ -14,7 +14,7 @@ interface CustomerOrder {
   order_total: string;
   quantity: number;
   order_id: number | null;
-  name: string;
+  name: string; // store name
 }
 
 interface BaristaOrder {
@@ -25,6 +25,16 @@ interface BaristaOrder {
   order_id: number;
   quantity: number;
   username: string;
+}
+
+function storeNameToClass(storeName: string): string {
+  return (
+    'store-' +
+    storeName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-') // non-alphanumerics to "-"
+      .replace(/(^-|-$)/g, '') // trim leading/trailing "-"
+  );
 }
 
 function Orders() {
@@ -75,7 +85,8 @@ function Orders() {
     } else if (userType === 'barista') {
       getIncompleteOrders();
     }
-  }, [userType]);
+  }, [userType, user?.store_id, username]);
+
   useEffect(() => {
     if (userType === 'barista') {
       axios
@@ -90,7 +101,7 @@ function Orders() {
         })
         .catch((err) => console.error(err));
     }
-  }, [userType]);
+  }, [userType, user?.store_id]);
 
   async function handleOrderComplete(pk_order_id: number) {
     console.log(pk_order_id, 'completed');
@@ -130,6 +141,7 @@ function Orders() {
 
   if (status === 'loading' || loading) return <div>Loading...</div>;
 
+  // CUSTOMER / STUDENT VIEW
   if (userType === 'customer' || userType === 'student') {
     const customerOrders = orders;
 
@@ -174,6 +186,7 @@ function Orders() {
     return (
       <div className='orders-page'>
         <h1 className='orders-title'>Your Order History</h1>
+
         <button
           onClick={() => router.push(`/${username}/cart`)}
           className='orders-create-btn'
@@ -182,61 +195,91 @@ function Orders() {
         </button>
 
         <div className='orders-container'>
-          {sortedGroups.map(([key, group]) => (
-            <div key={key} className='order-card'>
-              <h3 className='order-id'>
-                {group.order_id ? `Order #${group.order_id}` : 'Order'}
-              </h3>
-              <p className='order-store'>
-                <strong>Store:</strong> {group.store_name}
-              </p>
-              <ul className='order-items-list'>
-                {group.items.map((item) => (
-                  <li
-                    key={`${group.order_id ?? 'unassigned'}-${item.name}`}
-                    className='order-item'
-                  >
-                    {item.name} × {item.quantity} — ${item.subtotal.toFixed(2)}
-                  </li>
-                ))}
-              </ul>
-              <p className='order-total'>
-                <strong>Total:</strong> ${group.total.toFixed(2)}
-              </p>
-            </div>
-          ))}
+          {sortedGroups.map(([key, group]) => {
+            const storeClass = storeNameToClass(group.store_name);
+
+            return (
+              <article
+                key={key}
+                className={`order-card ${storeClass}`}
+              >
+                <div className='order-card__image-wrapper'>
+                  {/* Background is set in CSS based on store-* class */}
+                  <div className='order-card__image' aria-hidden='true' />
+                  <span className='order-card__badge order-card__badge--id'>
+                    {group.order_id ? `#${group.order_id}` : 'Order'}
+                  </span>
+                  <span className='order-card__badge order-card__badge--status'>
+                    Completed
+                  </span>
+                </div>
+
+                <div className='order-card__body'>
+                  <h3 className='order-card__store'>{group.store_name}</h3>
+
+                  <ul className='order-card__items-list'>
+                    {group.items.map((item) => (
+                      <li
+                        key={`${group.order_id ?? 'unassigned'}-${item.name}`}
+                        className='order-card__item'
+                      >
+                        <span className='order-card__item-main'>
+                          {item.quantity}× {item.name}
+                        </span>
+                        <span className='order-card__item-price'>
+                          ${item.subtotal.toFixed(2)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className='order-card__footer'>
+                    <span className='order-card__footer-label'>Total</span>
+                    <span className='order-card__total'>
+                      ${group.total.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     );
   }
 
+  // BARISTA VIEW
   if (userType === 'barista') {
     return (
       <div className='orders-page'>
         <h1 className='orders-title'>Incoming Orders</h1>
+
         <div className='orders-container'>
           {baristaOrders.length === 0 ? (
-            <p>No active orders right now.</p>
+            <p className='orders-empty'>No active orders right now.</p>
           ) : (
             baristaOrders.map((order) => (
-              <div key={order.pk_order_id} className='order-card'>
+              <div
+                key={order.pk_order_id}
+                className='order-card order-card--barista'
+              >
                 <h3 className='order-id'>Order #{order.order_id}</h3>
-                <p>
+                <p className='order-barista-line'>
                   <strong>Customer:</strong> {order.username}
                 </p>
-                <p>
+                <p className='order-barista-line'>
                   <strong>Item:</strong> {order.item_name}
                 </p>
-                <p>
+                <p className='order-barista-line'>
                   <strong>Quantity:</strong> {order.quantity}
                 </p>
-                <p>
+                <p className='order-barista-line'>
                   <strong>Status:</strong>{' '}
                   {order.completed ? 'Completed' : 'Pending'}
                 </p>
                 {!order.completed && (
                   <button
-                    className='orders-create-btn'
+                    className='orders-create-btn orders-complete-btn'
                     disabled={!canCompleteOrder(order)}
                     onClick={() => handleOrderComplete(order.pk_order_id)}
                   >
