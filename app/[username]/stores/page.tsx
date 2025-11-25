@@ -60,7 +60,7 @@ function CoffeeShops() {
 
   return (
     <div>
-      <h1>Stores</h1>
+      <h1>Browse All DSTJ Coffee Shops</h1>
       <div>
         {' '}
         {/*Container for all the store cards */}
@@ -71,10 +71,11 @@ function CoffeeShops() {
               onClick={() => handleCardClick(store.store_id)}
             >
               {/*The store card */}
-              <h3>Store #{store.name}</h3>
+              <h3>{store.name}</h3>
               <p>{store.address}</p>
               <p>
-                {store.open_time}AM - {store.close_time}PM
+                {store.open_time.replace(':00', '')} AM -
+                {store.close_time.replace(':00', '')} PM
               </p>
             </div>
           ))}
