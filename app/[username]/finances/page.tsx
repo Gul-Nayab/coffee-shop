@@ -19,7 +19,7 @@ import '@/app/styles/Finances.css';
 interface Item {
   store_id: number;
   item_name: string;
-  item_count: number;
+  item_count: string;
   earnings: string;
 }
 
@@ -62,7 +62,7 @@ function Earnings() {
       let total_sold = 0;
       response.data.forEach((item: Item) => {
         total_earned = total_earned + parseFloat(item.earnings);
-        total_sold = total_sold + item.item_count;
+        total_sold = total_sold + parseInt(item.item_count);
       });
       setEarningStats({ total_earned: total_earned, total_sold: total_sold });
     } catch (error) {
@@ -104,32 +104,37 @@ function Earnings() {
 
   if (status === 'loading' || loading) return <div>Loading...</div>;
   return (
-    <div className="finance-page">
-      <div className="finance-inner">
-        <h1 className="finance-title"> Finance Overview</h1>
-        <p className="finance-subtitle">
-            Track your coffee shop’s financial health and inventory performance.
+    <div className='finance-page'>
+      <div className='finance-inner'>
+        <h1 className='finance-title'> Finance Overview</h1>
+        <p className='finance-subtitle'>
+          Track your coffee shop’s financial health and inventory performance.
         </p>
         <div>
           {' '}
           {/*This div shows total earning and budget */}
-          <div className="finance-section-label">Money Stats</div>
-          <div className="finance-grid">
-            <div className="finance-card">
-              <div className="finance-card-title">CURRENT BUDGET</div>
-              <div className="finance-card-value">${budget}</div>
+          <div className='finance-section-label'>Money Stats</div>
+          <div className='finance-grid'>
+            <div className='finance-card'>
+              <div className='finance-card-title'>CURRENT BUDGET</div>
+              <div className='finance-card-value'>${budget}</div>
               {/*If button is clicked, show number input with set and cancel buttons */}
               {showBudgetForm ? (
-                <div  className="finance-budget-form"/*style={{ display: 'flex', gap: '4px' }}*/>
+                <div
+                  className='finance-budget-form' /*style={{ display: 'flex', gap: '4px' }}*/
+                >
                   <input
                     type='number'
                     min='0'
                     value={newBudgetValue || budget}
-                    onChange={(e) => setNewBudgetValue(parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      setNewBudgetValue(parseFloat(e.target.value))
+                    }
                     style={{ width: '80px' }}
                     placeholder='new budget'
                   />
-                  <button className="finance-btn"
+                  <button
+                    className='finance-btn'
                     onClick={() => {
                       setNewBudget(earnings[0].store_id, newBudgetValue);
                       setNewBudgetValue(null);
@@ -138,7 +143,8 @@ function Earnings() {
                   >
                     Set
                   </button>
-                  <button className="finance-btn"
+                  <button
+                    className='finance-btn'
                     style={{ background: '#b76e3b' }}
                     onClick={() => {
                       setShowBudgetForm(false);
@@ -149,52 +155,59 @@ function Earnings() {
                   </button>
                 </div>
               ) : (
-                <button className="finance-btn"
-                  onClick={() => setShowBudgetForm(true)}>
+                <button
+                  className='finance-btn'
+                  onClick={() => setShowBudgetForm(true)}
+                >
                   {/*The actual set new budget button*/}
                   Set New Budget
                 </button>
               )}
             </div>
-          
-            <div className="finance-card">
-              <div className="finance-card-title">EARNINGS SO FAR</div>
-              <div className="finance-card-value"> 
+
+            <div className='finance-card'>
+              <div className='finance-card-title'>EARNINGS SO FAR</div>
+              <div className='finance-card-value'>
                 ${earningStats.total_earned.toFixed(2)}
               </div>
             </div>
           </div>
         </div>
         <div>
-          <div className="finance-section-label">Item Stats</div>
-          <div className="item-grid">
-            <div className="item-small-card">
-              <div className="item-small-label">Items sold so far</div>
-              <div className="item-small-value">{earningStats.total_sold}</div>
+          <div className='finance-section-label'>Item Stats</div>
+          <div className='item-grid'>
+            <div className='item-small-card'>
+              <div className='item-small-label'>Items sold so far</div>
+              <div className='item-small-value'>{earningStats.total_sold}</div>
             </div>
 
-            <div className="item-chart-card">
-              <div className="item-chart-title">Item Popularity</div>
-              <div className="item-chart-sub">
+            <div className='item-chart-card'>
+              <div className='item-chart-title'>Item Popularity</div>
+              <div className='item-chart-sub'>
                 Sales performances across product categories.
               </div>
               {/**graph to show how many of each item is sold to guage item popularity */}
-                <BarChart width={'90%'} height={350} data={earnings} margin={{ bottom: 20 }}>
-                  <CartesianGrid strokeDasharray='3 3' />
-                  <XAxis dataKey='item_name' >
-                    <Label value='Item Name' offset={7} position="bottom" />
-                  </XAxis>
-                  <YAxis>
-                    <Label
-                      value='Number sold'
-                      angle={-90}
-                      position='insideLeft'
-                      style={{ textAnchor: 'middle' }}
-                    />
-                  </YAxis>
-                  <Tooltip />
-                  <Bar dataKey='item_count' fill='#8884d8' />
-                </BarChart>
+              <BarChart
+                width={'90%'}
+                height={350}
+                data={earnings}
+                margin={{ bottom: 20 }}
+              >
+                <CartesianGrid strokeDasharray='3 3' />
+                <XAxis dataKey='item_name'>
+                  <Label value='Item Name' offset={7} position='bottom' />
+                </XAxis>
+                <YAxis>
+                  <Label
+                    value='Number sold'
+                    angle={-90}
+                    position='insideLeft'
+                    style={{ textAnchor: 'middle' }}
+                  />
+                </YAxis>
+                <Tooltip />
+                <Bar dataKey='item_count' fill='#8884d8' />
+              </BarChart>
             </div>
           </div>
         </div>
